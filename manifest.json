@@ -1,0 +1,15 @@
+{
+  "name": "Admin Los Tapatíos",
+  "short_name": "AdminTapatíos",
+  "start_url": "./admin.html",
+  "display": "standalone",
+  "background_color": "#0f0f12",
+  "theme_color": "#800020",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3202/3202926.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
