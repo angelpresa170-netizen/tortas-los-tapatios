@@ -46,6 +46,14 @@
     </div>
 
     <script>
+        function verificarPassword() {
+    let pass = document.getElementById('adminPass').value;
+    if(pass === 'TAPATIO2026') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('panelPrincipal').style.display = 'block';
+    } else {
+        mostrarAviso('Contraseña incorrecta');
+    }
         function guardarProducto() {
             let nombre = document.getElementById('prodNombre').value;
             let precio = document.getElementById('prodPrecio').value;
