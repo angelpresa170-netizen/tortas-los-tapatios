@@ -27,27 +27,32 @@
         .pedido-box { background: rgba(128,0,32,0.15); border-left: 4px solid #800020; padding: 15px; margin-bottom: 15px; border-radius: 6px; }
         .badge { background: #800020; color: #D9B59C; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
         
-        /* Estilo de la notificación (Aviso) */
         .toast { position: fixed; top: 20px; right: 20px; background: #D9B59C; color: #4a0013; padding: 15px 25px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 3000; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; pointer-events: none; }
         .toast.show { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA DE LOGIN -->
+    <!-- PANTALLA DE LOGIN CON BOTÓN DE VER CONTRASEÑA -->
     <div id="loginScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f12; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
         <h2 style="color: #D9B59C; margin-bottom: 20px;">Acceso Admin</h2>
-        <input type="password" id="adminPass" placeholder="Ingresa la contraseña" style="width: 250px; text-align: center; margin-bottom: 15px;">
+        
+        <input type="password" id="adminPass" placeholder="Ingresa la contraseña" style="width: 250px; text-align: center; margin-bottom: 5px;">
+        
+        <div style="display: flex; align-items: center; margin-bottom: 15px; color: #D9B59C; font-size: 14px;">
+            <input type="checkbox" id="mostrarPass" onclick="togglePassword()" style="width: auto; margin: 0 8px 0 0; cursor: pointer;">
+            <label for="mostrarPass" style="cursor: pointer;">Mostrar contraseña</label>
+        </div>
+
         <button onclick="verificarPassword()" style="width: 250px;">Entrar</button>
     </div>
 
-    <!-- PANEL PRINCIPAL (Oculto hasta poner la contraseña) -->
+    <!-- PANEL PRINCIPAL -->
     <div id="panelPrincipal" style="display: none;">
 
         <h1>Panel de Administración - Tortas Ahogadas Los Tapatíos Y Carnitas</h1>
 
         <div class="grid">
-            <!-- COLUMNA 1: GESTIÓN DE PRODUCTOS -->
             <div class="card">
                 <h2>Gestión del Menú</h2>
                 <input type="text" id="prodNombre" placeholder="Nombre del alimento / paquete">
@@ -64,25 +69,32 @@
                 <div id="listaProductosAdmin"></div>
             </div>
 
-            <!-- COLUMNA 2: PEDIDOS EN TIEMPO REAL -->
             <div class="card">
                 <h2>Pedidos Recibidos (En Tiempo Real)</h2>
                 <div id="listaPedidosAdmin"></div>
             </div>
         </div>
 
-    </div> <!-- ESTE ES EL CIERRE DEL DIV PRINCIPAL QUE TE FALTABA -->
+    </div> 
 
-    <!-- CONTENEDOR DEL AVISO (Toast) -->
+    <!-- CONTENEDOR DEL AVISO -->
     <div id="adminToast" class="toast">Aviso</div>
 
     <script>
-        // Registrar Service Worker para PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(err => console.log('SW falló:', err));
         }
 
-        // Sistema de notificaciones (Reemplaza a los alerts)
+        // Función para mostrar/ocultar contraseña
+        function togglePassword() {
+            let passInput = document.getElementById('adminPass');
+            if (passInput.type === "password") {
+                passInput.type = "text";
+            } else {
+                passInput.type = "password";
+            }
+        }
+
         function mostrarAviso(mensaje) {
             let toast = document.getElementById('adminToast');
             toast.innerText = mensaje;
