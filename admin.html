@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Los Tapatíos</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0f0f12; color: #eee; margin: 0; padding: 20px; }
+        h1, h2 { color: #D9B59C; border-bottom: 2px solid #800020; padding-bottom: 5px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(217,181,156,0.2); }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
+        button { background: #800020; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #a00028; }
+        .pedido-box { background: rgba(128,0,32,0.15); border-left: 4px solid #800020; padding: 15px; margin-bottom: 15px; border-radius: 6px; }
+        .badge { background: #800020; color: #D9B59C; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <h1>Panel de Administración - Tortas Ahogadas Los Tapatíos</h1>
+
+    <div class="grid">
+        <!-- COLUMNA 1: GESTIÓN DE PRODUCTOS -->
+        <div class="card">
+            <h2>Gestión del Menú</h2>
+            <input type="text" id="prodNombre" placeholder="Nombre del alimento / paquete">
+            <input type="number" id="prodPrecio" placeholder="Precio ($)">
+            <select id="prodCat">
+                <option value="Alimentos">Alimentos</option>
+                <option value="Paquetes">Paquetes</option>
+                <option value="Especialidades">Especialidades</option>
+            </select>
+            <textarea id="prodDesc" placeholder="Descripción opcional"></textarea>
+            <button onclick="guardarProducto()">Agregar al Menú</button>
+
+            <h3>Menú Actual</h3>
+            <div id="listaProductosAdmin"></div>
+        </div>
+
+        <!-- COLUMNA 2: PEDIDOS EN TIEMPO REAL -->
+        <div class="card">
+            <h2>Pedidos Recibidos (En Tiempo Real)</h2>
+            <div id="listaPedidosAdmin"></div>
+        </div>
+    </div>
+
+    <script>
+        function guardarProducto() {
+            let nombre = document.getElementById('prodNombre').value;
+            let precio = document.getElementById('prodPrecio').value;
+            let categoria = document.getElementById('prodCat').value;
+            let desc = document.getElementById('prodDesc').value;
+
+            if(!nombre || !precio) return alert('Completa nombre y precio');
+
+            let prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            prods.push({ id: Date.now(), nombre, precio: parseFloat(precio), categoria, desc });
+            localStorage.setItem('tapatios_productos', JSON.stringify(prods));
+
+            document.getElementById('prodNombre').value = '';
+            document.getElementById('prodPrecio').value = '';
+            document.getElementById('prodDesc').value = '';
+            
+            cargarProductosAdmin();
+            alert('Producto agregado correctamente.');
+        }
+
+        function cargarProductosAdmin() {
+            let prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            let cont = document.getElementById('listaProductosAdmin');
+            cont.innerHTML = '';
+            prods.forEach((p, idx) => {
+                cont.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; background:rgba(255,255,255,0.03); padding:8px;">
+                        <span><b>${p.nombre}</b> (${p.categoria}) - $${p.precio}</span>
+                        <button style="background:red; padding:2px 8px;" onclick="eliminarProducto(${idx})">✕</button>
+                    </div>
+                `;
+            });
+        }
+
+        function eliminarProducto(idx) {
+            let prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            prods.splice(idx, 1);
+            localStorage.setItem('tapatios_productos', JSON.stringify(prods));
+            cargarProductosAdmin();
+        }
+
+        // Monitoreo e interconexión de Pedidos
+        let cantidadPedidosPrevios = 0;
+
+        function cargarPedidosAdmin() {
+            let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
+            let cont = document.getElementById('listaPedidosAdmin');
+
+            if(pedidos.length > cantidadPedidosPrevios) {
+                // Alerta sonora o visual al recibir un nuevo pedido
+                cantidadPedidosPrevios = pedidos.length;
+            }
+
+            cont.innerHTML = '';
+            if(pedidos.length === 0) {
+                cont.innerHTML = '<p>No hay pedidos pendientes.</p>';
+                return;
+            }
+
+            pedidos.reverse().forEach(p => {
+                let itemsTxt = p.items.map(i => i.nombre).join(', ');
+                cont.innerHTML += `
+                    <div class="pedido-box">
+                        <div style="display:flex; justify-content:space-between;">
+                            <b>Pedido #${p.id}</b>
+                            <span class="badge">${p.cliente.tipo}</span>
+                        </div>
+                        <p style="margin:5px 0;"><b>Cliente:</b> ${p.cliente.nombre} (${p.cliente.tel})</p>
+                        ${p.cliente.direccion ? `<p style="margin:5px 0;"><b>Dirección:</b> ${p.cliente.direccion}</p>` : ''}
+                        <p style="margin:5px 0;"><b>Pago:</b> ${p.cliente.pago} ${p.cliente.cambio || ''}</p>
+                        <p style="margin:5px 0;"><b>Productos:</b> ${itemsTxt}</p>
+                        <p style="margin:5px 0; color:#D9B59C;"><b>Total: $${p.total.toFixed(2)}</b></p>
+                        
+                        <label>Estatus del Pedido:</label>
+                        <select onchange="actualizarEstatus('${p.id}', this.value)">
+                            <option value="Recibido / En preparación" ${p.estatus === 'Recibido / En preparación' ? 'selected' : ''}>Recibido / En preparación</option>
+                            <option value="En camino / Listo para entregar" ${p.estatus === 'En camino / Listo para entregar' ? 'selected' : ''}>En camino / En sucursal</option>
+                            <option value="¡Tu pedido está listo!" ${p.estatus === '¡Tu pedido está listo!' ? 'selected' : ''}>¡Tu pedido está listo!</option>
+                        </select>
+                    </div>
+                `;
+            });
+        }
+
+        function actualizarEstatus(id, nuevoEstatus) {
+            let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
+            let p = pedidos.find(x => x.id === id);
+            if(p) {
+                p.estatus = nuevoEstatus;
+                localStorage.setItem('tapatios_pedidos', JSON.stringify(pedidos));
+                alert('Estatus actualizado en tiempo real.');
+            }
+        }
+
+        setInterval(cargarPedidosAdmin, 2000);
+        window.onload = () => {
+            cargarProductosAdmin();
+            cargarPedidosAdmin();
+        };
+    </script>
+</body>
+</html>
