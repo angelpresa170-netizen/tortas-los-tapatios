@@ -257,24 +257,19 @@
             </div>
 
             <!-- FORMULARIO PASO POR MI PEDIDO -->
-            <div id="formSucursal" style="display:none;">
-                <div class="input-group"><input type="text" id="sucNombre" placeholder="Nombre de quien recoge"></div>
-                <div class="input-group"><input type="tel" id="sucTel" placeholder="Teléfono"></div>
-                <div class="input-group">
-                    <select id="sucPago" onchange="toggleCambio(this.value)">
-                        <option value="">Método de pago al llegar</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="Tarjeta">Tarjeta</option>
-                    </select>
-                </div>
-                <div class="input-group" id="cambioGroup" style="display:none;">
-                    <input type="text" id="sucCambio" placeholder="¿Cambio para cuánto? (Ej. $500)">
-                </div>
-            </div>
-
-            <button class="add-btn" style="width:100%; margin-top:15px; padding:12px; background:linear-gradient(135deg, var(--granate), #500014);" onclick="confirmarPedido()">Confirmar y Enviar Pedido</button>
-        </div>
+         <div style="margin-bottom: 20px;">
+    <label style="color: #D9B59C; font-weight: bold; font-size: 1rem;">Método de Pago:</label>
+    
+    <div class="pago-opciones">
+        <div class="pago-btn activo" onclick="seleccionarPago('Efectivo', event)">💵 Efectivo</div>
+        <div class="pago-btn" onclick="seleccionarPago('Tarjeta', event)">💳 Terminal</div>
+        <div class="pago-btn" onclick="seleccionarPago('Transferencia', event)">📱 Transfer</div>
     </div>
+    
+    <div id="cambioInput" style="display: block;">
+        <input type="number" id="montoEfectivo" placeholder="¿Con qué billete pagas? (Para cambio)" style="width: 100%; padding: 10px; margin-top: 8px; background: rgba(255,255,255,0.08); border: 1px solid #444; color: white; border-radius: 6px;">
+    </div>
+</div>
 
     <!-- NOTIFICACIÓN TOAST EN TIEMPO REAL -->
     <div class="toast" id="userToast"></div>
@@ -448,6 +443,6 @@
         }, 3000);
 
         window.onload = cargarMenu;
-    </script>
+    </script>       
 </body>
 </html>
