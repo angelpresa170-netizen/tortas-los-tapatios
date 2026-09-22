@@ -310,43 +310,5 @@
             setInterval(cargarPedidos, 3000);
         };
     </script>
-    // Sistema de actualización de Estatus en Tiempo Real con autocierre
-        let ultimoEstatusVisto = '';
-
-        setInterval(() => {
-            let miPedidoId = localStorage.getItem('ultimo_pedido_id');
-            if(miPedidoId) {
-                let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
-                let miP = pedidos.find(x => x.id === miPedidoId);
-                
-                if(miP && miP.estatus !== ultimoEstatusVisto) {
-                    ultimoEstatusVisto = miP.estatus;
-                    let toast = document.getElementById('userToast');
-                    
-                    toast.style.display = 'block';
-                    toast.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <b>Estado de tu pedido #${miP.id}:</b><br>${miP.estatus}
-                            </div>
-                            <button onclick="cerrarToast()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer; margin-left:15px;">✕</button>
-                        </div>
-                    `;
-
-                    if(miP.estatus === '¡Tu pedido está listo!') {
-                        toast.style.background = '#008000';
-                    }
-
-                    // Ocultar automáticamente el mensaje después de 6 segundos
-                    setTimeout(() => {
-                        cerrarToast();
-                    }, 6000);
-                }
-            }
-        }, 3000);
-
-        function cerrarToast() {
-            document.getElementById('userToast').style.display = 'none';
-        }
 </body>
 </html>
