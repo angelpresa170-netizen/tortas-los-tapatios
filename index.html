@@ -145,7 +145,7 @@
         }
         .add-btn:hover { background: #a00028; }
 
-        /* MODAL / PANEL DE CARRITO (DESPLAZABLE DESDE LA DERECHA) */
+        /* MODAL / PANEL DE CARRITO */
         .cart-drawer {
             position: fixed;
             top: 0; right: -450px;
@@ -166,7 +166,7 @@
         .cart-items { flex: 1; overflow-y: auto; margin: 20px 0; }
         .cart-item { display: flex; justify-content: space-between; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; }
 
-        /* FORMULARIOS DE ENVIO */
+        /* FORMULARIOS DE ENVIO Y PAGO */
         .delivery-opts { display: flex; gap: 10px; margin-bottom: 15px; }
         .tab-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 8px; cursor: pointer; }
         .tab-btn.active { background: var(--granate); border-color: var(--carnita); }
@@ -179,7 +179,22 @@
             border-radius: 6px; color: white;
         }
 
-        /* NOTIFICACION FLOTANTE EN TIEMPO REAL */
+        /* ESTILOS DE BOTONES DE PAGO (NUEVO PASO 2) */
+        .pago-opciones { display: flex; gap: 10px; margin-top: 10px; }
+        .pago-btn { 
+            flex: 1; padding: 12px 5px; background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--glass-border); border-radius: 8px; 
+            color: white; text-align: center; cursor: pointer; 
+            transition: all 0.3s ease; font-size: 13px;
+        }
+        .pago-btn.activo { 
+            border-color: var(--carnita); 
+            background: rgba(128,0,32,0.4); 
+            color: var(--carnita); 
+            font-weight: bold; 
+        }
+
+        /* NOTIFICACION FLOTANTE */
         .toast {
             position: fixed; bottom: 20px; right: 20px;
             background: var(--granate); color: white;
@@ -194,7 +209,6 @@
 
     <header>
         <div class="logo-container">
-            <!-- Render del Logotipo integrado -->
             <svg class="logo-img" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="#800020" stroke="#D9B59C" stroke-width="3"/>
                 <path d="M 25,50 Q 50,20 75,50 Q 50,80 25,50 Z" fill="#D9B59C"/>
@@ -241,35 +255,34 @@
                 <button class="tab-btn" id="btnSuc" onclick="setTipoEntrega('sucursal')">Paso por él</button>
             </div>
 
-            <!-- FORMULARIO A DOMICILIO -->
-            <div id="formDomicilio">
-                <div class="input-group"><input type="text" id="domNombre" placeholder="Nombre completo"></div>
-                <div class="input-group"><input type="tel" id="domTel" placeholder="Teléfono"></div>
-                <div class="input-group"><input type="text" id="domCalle" placeholder="Calle y Número"></div>
-                <div class="input-group"><input type="text" id="domColonia" placeholder="Colonia"></div>
-                <div class="input-group">
-                    <select id="domPago">
-                        <option value="">Seleccionar Método de Pago</option>
-                        <option value="Efectivo al recibir">Efectivo al recibir</option>
-                        <option value="Tarjeta al recibir">Tarjeta al recibir</option>
-                    </select>
+            <!-- FORMULARIO CLIENTE -->
+            <div id="formCliente">
+                <div class="input-group"><input type="text" id="cliNombre" placeholder="Nombre completo"></div>
+                <div class="input-group"><input type="tel" id="cliTel" placeholder="Teléfono"></div>
+                
+                <div id="secDireccion">
+                    <div class="input-group"><input type="text" id="domCalle" placeholder="Calle y Número"></div>
+                    <div class="input-group"><input type="text" id="domColonia" placeholder="Colonia"></div>
+                </div>
+
+                <!-- SECCIÓN PAGO INTERACTIVO (NUEVO PASO 3) -->
+                <div style="margin: 15px 0 10px 0;">
+                    <label style="color: var(--carnita); font-weight: bold; font-size: 0.9rem;">Método de Pago:</label>
+                    <div class="pago-opciones">
+                        <div class="pago-btn activo" onclick="seleccionarPago('Efectivo', event)">💵 Efectivo</div>
+                        <div class="pago-btn" onclick="seleccionarPago('Tarjeta', event)">💳 Terminal</div>
+                        <div class="pago-btn" onclick="seleccionarPago('Transferencia', event)">📱 Transfer</div>
+                    </div>
+                    
+                    <div id="cambioInput" style="display: block; margin-top: 10px;">
+                        <input type="text" id="montoEfectivo" placeholder="¿Con qué billete pagas? (Ej. $500)" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: white; border-radius: 6px;">
+                    </div>
                 </div>
             </div>
 
-            <!-- FORMULARIO PASO POR MI PEDIDO -->
-         <div style="margin-bottom: 20px;">
-    <label style="color: #D9B59C; font-weight: bold; font-size: 1rem;">Método de Pago:</label>
-    
-    <div class="pago-opciones">
-        <div class="pago-btn activo" onclick="seleccionarPago('Efectivo', event)">💵 Efectivo</div>
-        <div class="pago-btn" onclick="seleccionarPago('Tarjeta', event)">💳 Terminal</div>
-        <div class="pago-btn" onclick="seleccionarPago('Transferencia', event)">📱 Transfer</div>
+            <button class="add-btn" style="width:100%; margin-top:15px; padding:12px; background:linear-gradient(135deg, var(--granate), #500014);" onclick="confirmarPedido()">Confirmar y Enviar Pedido</button>
+        </div>
     </div>
-    
-    <div id="cambioInput" style="display: block;">
-        <input type="number" id="montoEfectivo" placeholder="¿Con qué billete pagas? (Para cambio)" style="width: 100%; padding: 10px; margin-top: 8px; background: rgba(255,255,255,0.08); border: 1px solid #444; color: white; border-radius: 6px;">
-    </div>
-</div>
 
     <!-- NOTIFICACIÓN TOAST EN TIEMPO REAL -->
     <div class="toast" id="userToast"></div>
@@ -277,6 +290,7 @@
     <script>
         let carrito = [];
         let tipoEntrega = 'domicilio';
+        let metodoPagoSeleccionado = 'Efectivo'; // PASO 4: Variable global de pago
 
         // Escuchador de animación Scroll Reveal
         window.addEventListener('scroll', reveal);
@@ -299,19 +313,31 @@
             tipoEntrega = tipo;
             document.getElementById('btnDom').classList.toggle('active', tipo === 'domicilio');
             document.getElementById('btnSuc').classList.toggle('active', tipo === 'sucursal');
-            document.getElementById('formDomicilio').style.display = tipo === 'domicilio' ? 'block' : 'none';
-            document.getElementById('formSucursal').style.display = tipo === 'sucursal' ? 'block' : 'none';
+            document.getElementById('secDireccion').style.display = tipo === 'domicilio' ? 'block' : 'none';
         }
 
-        function toggleCambio(val) {
-            document.getElementById('cambioGroup').style.display = (val === 'Efectivo') ? 'block' : 'none';
+        // PASO 4: Función para alternar el botón activo y mostrar/ocultar billete
+        function seleccionarPago(metodo, evento) {
+            metodoPagoSeleccionado = metodo;
+            
+            let botones = document.querySelectorAll('.pago-btn');
+            botones.forEach(btn => btn.classList.remove('activo'));
+
+            evento.currentTarget.classList.add('activo');
+
+            let inputCambio = document.getElementById('cambioInput');
+            if(metodo === 'Efectivo') {
+                inputCambio.style.display = 'block';
+            } else {
+                inputCambio.style.display = 'none';
+                document.getElementById('montoEfectivo').value = '';
+            }
         }
 
         function cargarMenu() {
             const container = document.getElementById('menuContainer');
             const prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
             
-            // Agrupar
             const categorias = { "Alimentos": [], "Paquetes": [], "Especialidades": [] };
             prods.forEach(p => {
                 if(categorias[p.categoria]) categorias[p.categoria].push(p);
@@ -319,7 +345,6 @@
 
             container.innerHTML = '';
 
-            // Solo mostrar secciones con productos
             for (let cat in categorias) {
                 if(categorias[cat].length > 0) {
                     let sec = document.createElement('div');
@@ -345,7 +370,7 @@
                     container.appendChild(sec);
                 }
             }
-            reveal(); // Ejecutar revisión de animaciones
+            reveal();
         }
 
         function agregarCarrito(nombre, precio) {
@@ -385,23 +410,33 @@
             let numPedido = 'TP-' + Math.floor(1000 + Math.random() * 9000);
             let detallesCliente = {};
 
+            let nombre = document.getElementById('cliNombre').value;
+            let tel = document.getElementById('cliTel').value;
+            let cambio = document.getElementById('montoEfectivo').value;
+
+            if(!nombre || !tel) return alert('Ingresa tu nombre y teléfono.');
+
             if(tipoEntrega === 'domicilio') {
-                let nombre = document.getElementById('domNombre').value;
-                let tel = document.getElementById('domTel').value;
                 let calle = document.getElementById('domCalle').value;
                 let col = document.getElementById('domColonia').value;
-                let pago = document.getElementById('domPago').value;
+                if(!calle || !col) return alert('Ingresa tu calle y colonia.');
 
-                if(!nombre || !tel || !calle || !col || !pago) return alert('Llena todos los campos de entrega.');
-                detallesCliente = { tipo: 'A Domicilio', nombre, tel, direccion: `${calle}, Col. ${col}`, pago };
+                detallesCliente = { 
+                    tipo: 'A Domicilio', 
+                    nombre, 
+                    tel, 
+                    direccion: `${calle}, Col. ${col}`, 
+                    pago: metodoPagoSeleccionado,
+                    cambio: cambio ? `Cambio para: ${cambio}` : ''
+                };
             } else {
-                let nombre = document.getElementById('sucNombre').value;
-                let tel = document.getElementById('sucTel').value;
-                let pago = document.getElementById('sucPago').value;
-                let cambio = document.getElementById('sucCambio').value;
-
-                if(!nombre || !tel || !pago) return alert('Llena todos los campos para recoger.');
-                detallesCliente = { tipo: 'Paso por mi pedido', nombre, tel, pago, cambio: cambio ? `Cambio para: ${cambio}` : 'N/A' };
+                detallesCliente = { 
+                    tipo: 'Paso por mi pedido', 
+                    nombre, 
+                    tel, 
+                    pago: metodoPagoSeleccionado, 
+                    cambio: cambio ? `Cambio para: ${cambio}` : '' 
+                };
             }
 
             let nuevoPedido = {
@@ -413,7 +448,6 @@
                 fecha: new Date().toLocaleTimeString()
             };
 
-            // Guardar pedido para Admin
             let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
             pedidos.push(nuevoPedido);
             localStorage.setItem('tapatios_pedidos', JSON.stringify(pedidos));
@@ -443,6 +477,6 @@
         }, 3000);
 
         window.onload = cargarMenu;
-    </script>       
+    </script>
 </body>
 </html>
