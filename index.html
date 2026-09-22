@@ -3,312 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - Los Tapatíos</title>
+    <title>Tortas Ahogadas Los Tapatíos</title>
     <style>
         :root {
             --granate: #800020;
+            --granate-dark: #4a0013;
             --carnita: #D9B59C;
             --bg-dark: #121212;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(217, 181, 156, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(217, 181, 156, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
+        * { box-sizing: border-box; transition: all 0.3s ease; }
         body {
             margin: 0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-dark);
             color: #f5f5f5;
+            overflow-x: hidden;
         }
 
+        /* EFECTO LIQUID GLASS & ANIMACIONES */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* HEADER & LOGO */
         header {
-            background: var(--granate);
-            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid var(--carnita);
+            gap: 15px;
         }
 
-        header h1 {
-            margin: 0;
+        .logo-img {
+            height: 60px;
+            filter: drop-shadow(0 2px 8px rgba(128, 0, 32, 0.6));
+        }
+
+        .brand-title {
             color: var(--carnita);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0;
+            border-left: 3px solid var(--granate);
+            padding-left: 10px;
+        }
+
+        .cart-btn {
+            background: linear-gradient(135deg, var(--granate), var(--granate-dark));
+            color: var(--carnita);
+            border: 1px solid var(--carnita);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.4);
+        }
+        .cart-btn:hover { transform: scale(1.05); }
+
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+
+        /* BANNER AREA DE NIÑOS */
+        .kids-banner {
+            background: linear-gradient(135deg, rgba(128,0,32,0.8), rgba(18,18,18,0.9)), url('https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?q=80&w=1000') center/cover;
+            padding: 25px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--carnita);
+        }
+        .kids-banner h3 { margin: 0; color: var(--carnita); font-size: 1.5rem; }
+        .kids-banner p { margin: 5px 0 0 0; color: #ccc; }
+
+        /* CATALOGO */
+        .category-title {
+            color: var(--carnita);
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--granate);
+            padding-bottom: 8px;
+            margin: 35px 0 20px 0;
             text-transform: uppercase;
         }
 
-        .dashboard-container {
+        .grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 20px;
-            padding: 20px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
         }
 
-        @media(max-width: 900px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-        }
-
-        .panel {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
+        .card {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
+        .card:hover { transform: translateY(-5px); border-color: var(--carnita); }
+        .card h4 { margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; }
+        .card p { color: #aaa; font-size: 0.9rem; margin-bottom: 15px; }
+        .card .price { color: var(--carnita); font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; }
 
-        .panel h2 {
-            margin-top: 0;
-            color: var(--carnita);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
-
-        /* FORMULARIO PRODUCTOS */
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9rem; }
-        .input-group input, .input-group select, .input-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 6px;
+        .add-btn {
+            background: var(--granate);
             color: white;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            background: var(--carnita);
-            color: var(--granate);
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
         }
-        .btn:hover { background: #fff; }
+        .add-btn:hover { background: #a00028; }
 
-        /* LISTA DE PLATILLOS */
-        .item-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
-        .item-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.2);
-            padding: 10px; border-radius: 6px; margin-bottom: 8px;
+        /* MODAL / PANEL DE CARRITO (DESPLAZABLE DESDE LA DERECHA) */
+        .cart-drawer {
+            position: fixed;
+            top: 0; right: -450px;
+            width: 100%; max-width: 420px;
+            height: 100vh;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(25px);
+            border-left: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
         }
-        .btn-delete { background: #ff4c4c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        .cart-drawer.open { right: 0; }
 
-        /* PEDIDOS ACTIVOS */
-        .pedidos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-        .pedido-card {
-            background: rgba(255,255,255,0.03);
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
+        .cart-items { flex: 1; overflow-y: auto; margin: 20px 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; }
+
+        /* FORMULARIOS DE ENVIO */
+        .delivery-opts { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 8px; cursor: pointer; }
+        .tab-btn.active { background: var(--granate); border-color: var(--carnita); }
+
+        .input-group { margin-bottom: 10px; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 10px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px; color: white;
+        }
+
+        /* NOTIFICACION FLOTANTE EN TIEMPO REAL */
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--granate); color: white;
+            padding: 15px 25px; border-radius: 12px;
             border: 1px solid var(--carnita);
-            border-radius: 10px;
-            padding: 15px;
-            position: relative;
+            box-shadow: var(--glass-shadow);
+            display: none; z-index: 2000;
         }
-        .pedido-header {
-            display: flex; justify-content: space-between;
-            border-bottom: 1px dashed #555; padding-bottom: 10px; margin-bottom: 10px;
-        }
-        .badge { background: var(--granate); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; }
-        
-        .estatus-controls {
-            display: flex; gap: 5px; margin-top: 15px;
-        }
-        .estatus-btn {
-            flex: 1; padding: 8px 5px; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold;
-        }
-        .btn-prep { background: #f39c12; }
-        .btn-ready { background: #27ae60; }
-        .btn-camino { background: #2980b9; }
-
     </style>
 </head>
 <body>
 
     <header>
-        <h1>⚙️ Admin | Los Tapatíos</h1>
-        <a href="index.html" target="_blank" style="color: white; text-decoration: none; border: 1px solid white; padding: 5px 15px; border-radius: 20px;">Ver Tienda</a>
+        <div class="logo-container">
+            <!-- Render del Logotipo integrado -->
+            <svg class="logo-img" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#800020" stroke="#D9B59C" stroke-width="3"/>
+                <path d="M 25,50 Q 50,20 75,50 Q 50,80 25,50 Z" fill="#D9B59C"/>
+                <text x="50" y="55" font-size="14" font-weight="bold" fill="#800020" text-anchor="middle">LOS TAPATÍOS</text>
+            </svg>
+            <h1 class="brand-title">Tortas Ahogadas<br><span style="font-size:0.8rem; color:#fff;">Los Tapatíos</span></h1>
+        </div>
+        <button class="cart-btn" onclick="toggleCarrito()">🛒 Carrito (<span id="cartCount">0</span>)</button>
     </header>
 
-    <div class="dashboard-container">
+    <div class="container">
         
-        <!-- COLUMNA 1: GESTIÓN DE MENÚ -->
-        <div class="panel">
-            <h2>Agregar al Menú</h2>
-            <div class="input-group">
-                <label>Categoría</label>
-                <select id="prodCategoria">
-                    <option value="Alimentos">Alimentos (Tortas, Tacos)</option>
-                    <option value="Paquetes">Paquetes</option>
-                    <option value="Especialidades">Especialidades / Bebidas</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Nombre del Platillo</label>
-                <input type="text" id="prodNombre" placeholder="Ej. Torta Ahogada Sencilla">
-            </div>
-            <div class="input-group">
-                <label>Descripción (Opcional)</label>
-                <textarea id="prodDesc" rows="2" placeholder="Ej. Carnita, salsa al gusto y cebolla."></textarea>
-            </div>
-            <div class="input-group">
-                <label>Precio ($)</label>
-                <input type="number" id="prodPrecio" placeholder="0.00">
-            </div>
-            <button class="btn" onclick="guardarProducto()">Guardar Platillo</button>
-
-            <h3 style="margin-top: 30px; font-size: 1rem; color: var(--carnita);">Platillos Actuales:</h3>
-            <div class="item-list" id="listaProductos"></div>
-        </div>
-
-        <!-- COLUMNA 2: MONITOR DE PEDIDOS -->
-        <div class="panel">
-            <h2>Monitor de Pedidos en Vivo 📡</h2>
-            <div class="pedidos-grid" id="pedidosContainer">
-                <p style="color: #888;">Buscando pedidos...</p>
+        <!-- BANNER ÁREA PARA NIÑOS -->
+        <div class="kids-banner glass-card reveal">
+            <div>
+                <h3>¡Contamos con Área Infantil! 🎈</h3>
+                <p>Disfruta tus tortas ahogadas mientras tus pequeños se divierten en un espacio cómodo y seguro.</p>
             </div>
         </div>
+
+        <!-- CONTENEDOR DINÁMICO DE MENÚ -->
+        <div id="menuContainer"></div>
 
     </div>
 
+    <!-- PANEL CARRITO DESPLEGABLE -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3 style="margin:0; color:var(--carnita);">Tu Pedido</h3>
+            <button style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;" onclick="toggleCarrito()">✕</button>
+        </div>
+
+        <div class="cart-items" id="cartItems">
+            <p style="text-align:center; color:#888;">El carrito está vacío</p>
+        </div>
+
+        <div style="border-top:1px solid var(--glass-border); padding-top:15px;">
+            <p style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:bold;">
+                <span>Total:</span> <span style="color:var(--carnita);">$<span id="cartTotal">0.00</span></span>
+            </p>
+
+            <div class="delivery-opts">
+                <button class="tab-btn active" id="btnDom" onclick="setTipoEntrega('domicilio')">A Domicilio</button>
+                <button class="tab-btn" id="btnSuc" onclick="setTipoEntrega('sucursal')">Paso por él</button>
+            </div>
+
+            <!-- FORMULARIO A DOMICILIO -->
+            <div id="formDomicilio">
+                <div class="input-group"><input type="text" id="domNombre" placeholder="Nombre completo"></div>
+                <div class="input-group"><input type="tel" id="domTel" placeholder="Teléfono"></div>
+                <div class="input-group"><input type="text" id="domCalle" placeholder="Calle y Número"></div>
+                <div class="input-group"><input type="text" id="domColonia" placeholder="Colonia"></div>
+                <div class="input-group">
+                    <select id="domPago">
+                        <option value="">Seleccionar Método de Pago</option>
+                        <option value="Efectivo al recibir">Efectivo al recibir</option>
+                        <option value="Tarjeta al recibir">Tarjeta al recibir</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- FORMULARIO PASO POR MI PEDIDO -->
+         <div style="margin-bottom: 20px;">
+    <label style="color: #D9B59C; font-weight: bold; font-size: 1rem;">Método de Pago:</label>
+    
+    <div class="pago-opciones">
+        <div class="pago-btn activo" onclick="seleccionarPago('Efectivo', event)">💵 Efectivo</div>
+        <div class="pago-btn" onclick="seleccionarPago('Tarjeta', event)">💳 Terminal</div>
+        <div class="pago-btn" onclick="seleccionarPago('Transferencia', event)">📱 Transfer</div>
+    </div>
+    
+    <div id="cambioInput" style="display: block;">
+        <input type="number" id="montoEfectivo" placeholder="¿Con qué billete pagas? (Para cambio)" style="width: 100%; padding: 10px; margin-top: 8px; background: rgba(255,255,255,0.08); border: 1px solid #444; color: white; border-radius: 6px;">
+    </div>
+</div>
+
+    <!-- NOTIFICACIÓN TOAST EN TIEMPO REAL -->
+    <div class="toast" id="userToast"></div>
+
     <script>
-        // ======= SECCIÓN: INVENTARIO / MENÚ =======
-        function guardarProducto() {
-            let categoria = document.getElementById('prodCategoria').value;
-            let nombre = document.getElementById('prodNombre').value;
-            let desc = document.getElementById('prodDesc').value;
-            let precio = parseFloat(document.getElementById('prodPrecio').value);
+        let carrito = [];
+        let tipoEntrega = 'domicilio';
 
-            if(!nombre || isNaN(precio)) return alert("Por favor ingresa un nombre y un precio válido.");
-
-            let productos = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
-            productos.push({ id: Date.now(), categoria, nombre, desc, precio });
-            localStorage.setItem('tapatios_productos', JSON.stringify(productos));
-
-            // Limpiar form
-            document.getElementById('prodNombre').value = '';
-            document.getElementById('prodDesc').value = '';
-            document.getElementById('prodPrecio').value = '';
-            
-            cargarProductos();
-            alert("Platillo agregado al menú.");
-        }
-
-        function cargarProductos() {
-            let productos = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
-            let contenedor = document.getElementById('listaProductos');
-            contenedor.innerHTML = '';
-
-            productos.forEach((p, index) => {
-                contenedor.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <b style="color: white;">${p.nombre}</b> <br>
-                            <span style="font-size: 0.8rem; color: #aaa;">$${p.precio} | ${p.categoria}</span>
-                        </div>
-                        <button class="btn-delete" onclick="eliminarProducto(${index})">Borrar</button>
-                    </div>
-                `;
-            });
-        }
-
-        function eliminarProducto(index) {
-            let productos = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
-            productos.splice(index, 1);
-            localStorage.setItem('tapatios_productos', JSON.stringify(productos));
-            cargarProductos();
-        }
-
-
-        // ======= SECCIÓN: PEDIDOS EN VIVO =======
-        function cargarPedidos() {
-            let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
-            let contenedor = document.getElementById('pedidosContainer');
-            
-            if(pedidos.length === 0) {
-                contenedor.innerHTML = '<p style="color: #888;">No hay pedidos aún.</p>';
-                return;
+        // Escuchador de animación Scroll Reveal
+        window.addEventListener('scroll', reveal);
+        function reveal() {
+            let reveals = document.querySelectorAll('.reveal');
+            for(let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                if(elementTop < windowHeight - 100) {
+                    reveals[i].classList.add('active');
+                }
             }
+        }
 
-            // Mostrar los más recientes primero
-            pedidos.reverse(); 
-            contenedor.innerHTML = '';
+        function toggleCarrito() {
+            document.getElementById('cartDrawer').classList.toggle('open');
+        }
 
-            pedidos.forEach(pedido => {
-                // Construir lista de items
-                let itemsHTML = '';
-                pedido.items.forEach(i => {
-                    itemsHTML += `<div style="font-size:0.9rem; margin-bottom:3px;">- ${i.nombre}</div>`;
+        function setTipoEntrega(tipo) {
+            tipoEntrega = tipo;
+            document.getElementById('btnDom').classList.toggle('active', tipo === 'domicilio');
+            document.getElementById('btnSuc').classList.toggle('active', tipo === 'sucursal');
+            document.getElementById('formDomicilio').style.display = tipo === 'domicilio' ? 'block' : 'none';
+            document.getElementById('formSucursal').style.display = tipo === 'sucursal' ? 'block' : 'none';
+        }
+
+        function toggleCambio(val) {
+            document.getElementById('cambioGroup').style.display = (val === 'Efectivo') ? 'block' : 'none';
+        }
+
+        function cargarMenu() {
+            const container = document.getElementById('menuContainer');
+            const prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            
+            // Agrupar
+            const categorias = { "Alimentos": [], "Paquetes": [], "Especialidades": [] };
+            prods.forEach(p => {
+                if(categorias[p.categoria]) categorias[p.categoria].push(p);
+            });
+
+            container.innerHTML = '';
+
+            // Solo mostrar secciones con productos
+            for (let cat in categorias) {
+                if(categorias[cat].length > 0) {
+                    let sec = document.createElement('div');
+                    sec.className = 'reveal';
+                    
+                    let html = `<h2 class="category-title">${cat}</h2><div class="grid">`;
+                    categorias[cat].forEach(item => {
+                        html += `
+                            <div class="card glass-card">
+                                <div>
+                                    <h4>${item.nombre}</h4>
+                                    <p>${item.desc || ''}</p>
+                                </div>
+                                <div>
+                                    <div class="price">$${parseFloat(item.precio).toFixed(2)}</div>
+                                    <button class="add-btn" style="width:100%;" onclick="agregarCarrito('${item.nombre}', ${item.precio})">Agregar</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                    sec.innerHTML = html;
+                    container.appendChild(sec);
+                }
+            }
+            reveal(); // Ejecutar revisión de animaciones
+        }
+
+        function agregarCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarCarritoUI();
+            toggleCarrito();
+        }
+
+        function actualizarCarritoUI() {
+            document.getElementById('cartCount').innerText = carrito.length;
+            const itemsContainer = document.getElementById('cartItems');
+            let total = 0;
+            if(carrito.length === 0) {
+                itemsContainer.innerHTML = '<p style="text-align:center; color:#888;">El carrito está vacío</p>';
+            } else {
+                itemsContainer.innerHTML = '';
+                carrito.forEach((item, index) => {
+                    total += item.precio;
+                    itemsContainer.innerHTML += `
+                        <div class="cart-item">
+                            <span>${item.nombre}</span>
+                            <span>$${item.precio.toFixed(2)} <b style="color:red; cursor:pointer;" onclick="eliminarItem(${index})">✕</b></span>
+                        </div>
+                    `;
                 });
-
-                // Construir detalles del cliente
-                let detallesEnvio = `
-                    <p style="margin: 5px 0; font-size: 0.9rem;">👤 ${pedido.cliente.nombre} | 📞 ${pedido.cliente.tel}</p>
-                    <p style="margin: 5px 0; font-size: 0.9rem; color: var(--carnita);">🚚 ${pedido.cliente.tipo}</p>
-                    ${pedido.cliente.direccion ? `<p style="margin: 5px 0; font-size: 0.9rem;">📍 ${pedido.cliente.direccion}</p>` : ''}
-                    <p style="margin: 5px 0; font-size: 0.9rem; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px;">💳 Pago: <b>${pedido.cliente.pago}</b> <br> <span style="color:#aaa; font-size:0.8rem;">${pedido.cliente.cambio}</span></p>
-                `;
-
-                contenedor.innerHTML += `
-                    <div class="pedido-card">
-                        <div class="pedido-header">
-                            <b>${pedido.id}</b>
-                            <span class="badge">${pedido.estatus}</span>
-                        </div>
-                        <p style="margin:0; font-size:0.8rem; color:#888;">Hora: ${pedido.fecha}</p>
-                        
-                        <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
-                        ${detallesEnvio}
-                        
-                        <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
-                        <b>Orden:</b>
-                        <div style="margin: 10px 0; max-height: 100px; overflow-y: auto;">
-                            ${itemsHTML}
-                        </div>
-                        <div style="font-size: 1.2rem; text-align: right; color: var(--carnita); font-weight: bold;">
-                            Total: $${pedido.total.toFixed(2)}
-                        </div>
-
-                        <div class="estatus-controls">
-                            <button class="estatus-btn btn-prep" onclick="actualizarEstatus('${pedido.id}', 'En preparación')">Preparando</button>
-                            <button class="estatus-btn btn-camino" onclick="actualizarEstatus('${pedido.id}', 'En camino')">En camino</button>
-                            <button class="estatus-btn btn-ready" onclick="actualizarEstatus('${pedido.id}', '¡Tu pedido está listo!')">Listo</button>
-                        </div>
-                        
-                        <button style="width:100%; margin-top:10px; background:transparent; border:1px solid #ff4c4c; color:#ff4c4c; padding:5px; border-radius:4px; cursor:pointer;" onclick="eliminarPedido('${pedido.id}')">Archivar / Eliminar Pedido</button>
-                    </div>
-                `;
-            });
+            }
+            document.getElementById('cartTotal').innerText = total.toFixed(2);
         }
 
-        function actualizarEstatus(id, nuevoEstatus) {
+        function eliminarItem(idx) {
+            carrito.splice(idx, 1);
+            actualizarCarritoUI();
+        }
+
+        function confirmarPedido() {
+            if(carrito.length === 0) return alert('Agrega alimentos al carrito primero.');
+            let numPedido = 'TP-' + Math.floor(1000 + Math.random() * 9000);
+            let detallesCliente = {};
+
+            if(tipoEntrega === 'domicilio') {
+                let nombre = document.getElementById('domNombre').value;
+                let tel = document.getElementById('domTel').value;
+                let calle = document.getElementById('domCalle').value;
+                let col = document.getElementById('domColonia').value;
+                let pago = document.getElementById('domPago').value;
+
+                if(!nombre || !tel || !calle || !col || !pago) return alert('Llena todos los campos de entrega.');
+                detallesCliente = { tipo: 'A Domicilio', nombre, tel, direccion: `${calle}, Col. ${col}`, pago };
+            } else {
+                let nombre = document.getElementById('sucNombre').value;
+                let tel = document.getElementById('sucTel').value;
+                let pago = document.getElementById('sucPago').value;
+                let cambio = document.getElementById('sucCambio').value;
+
+                if(!nombre || !tel || !pago) return alert('Llena todos los campos para recoger.');
+                detallesCliente = { tipo: 'Paso por mi pedido', nombre, tel, pago, cambio: cambio ? `Cambio para: ${cambio}` : 'N/A' };
+            }
+
+            let nuevoPedido = {
+                id: numPedido,
+                cliente: detallesCliente,
+                items: [...carrito],
+                total: parseFloat(document.getElementById('cartTotal').innerText),
+                estatus: 'Recibido / En preparación',
+                fecha: new Date().toLocaleTimeString()
+            };
+
+            // Guardar pedido para Admin
             let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
-            let index = pedidos.findIndex(p => p.id === id);
-            if(index !== -1) {
-                pedidos[index].estatus = nuevoEstatus;
-                localStorage.setItem('tapatios_pedidos', JSON.stringify(pedidos));
-                cargarPedidos();
-            }
+            pedidos.push(nuevoPedido);
+            localStorage.setItem('tapatios_pedidos', JSON.stringify(pedidos));
+            localStorage.setItem('ultimo_pedido_id', numPedido);
+
+            carrito = [];
+            actualizarCarritoUI();
+            toggleCarrito();
+            alert(`¡Pedido #${numPedido} enviado exitosamente!`);
         }
 
-        function eliminarPedido(id) {
-            if(confirm("¿Seguro que deseas eliminar este pedido?")) {
+        // Sistema de actualización de Estatus en Tiempo Real
+        setInterval(() => {
+            let miPedidoId = localStorage.getItem('ultimo_pedido_id');
+            if(miPedidoId) {
                 let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
-                pedidos = pedidos.filter(p => p.id !== id);
-                localStorage.setItem('tapatios_pedidos', JSON.stringify(pedidos));
-                cargarPedidos();
+                let miP = pedidos.find(x => x.id === miPedidoId);
+                if(miP) {
+                    let toast = document.getElementById('userToast');
+                    toast.style.display = 'block';
+                    toast.innerHTML = `<b>Estado de tu pedido #${miP.id}:</b><br>${miP.estatus}`;
+                    if(miP.estatus === '¡Tu pedido está listo!') {
+                        toast.style.background = '#008000';
+                    }
+                }
             }
-        }
+        }, 3000);
 
-        // Iniciar
-        window.onload = () => {
-            cargarProductos();
-            cargarPedidos();
-            // Actualizar monitor cada 3 segundos automáticamente
-            setInterval(cargarPedidos, 3000);
-        };
-    </script>
+        window.onload = cargarMenu;
+    </script>       
 </body>
 </html>
+
