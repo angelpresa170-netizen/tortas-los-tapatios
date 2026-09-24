@@ -204,16 +204,6 @@
             }
         }
 
-        // Sincronización en tiempo real exacta a la de ARMM
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'tapatios_productos') {
-                cargarProductosAdmin();
-            }
-            if (e.key === 'tapatios_pedidos') {
-                cargarPedidosAdmin();
-            }
-        });
-
         setInterval(cargarPedidosAdmin, 2000);
         window.onload = () => {
             cargarProductosAdmin();
