@@ -18,8 +18,7 @@
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
@@ -31,7 +30,6 @@
       overflow-x: hidden;
     }
 
-    /* GLASSMORPHISM BASE */
     .glass-card {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
@@ -42,7 +40,6 @@
       transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease;
     }
 
-    /* BOTONES FLOTANTES E INTERACTIVIDAD (iOS + SAMSUNG) */
     .btn-floating {
       background: linear-gradient(135deg, var(--garnet-light), var(--garnet-main));
       color: #fff;
@@ -63,52 +60,27 @@
       box-shadow: 0 4px 15px -3px rgba(128, 0, 32, 0.3);
     }
 
-    /* NAVBAR & CARRITO FLOTANTE */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(13, 13, 16, 0.8);
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(13, 13, 16, 0.85);
       backdrop-filter: blur(15px);
       border-bottom: 1px solid var(--glass-border);
     }
 
-    .brand-title {
-      color: var(--carnita-accent);
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .cart-trigger {
-      position: relative;
-    }
+    .brand-title { color: var(--carnita-accent); font-size: 1.2rem; font-weight: 700; }
+    .cart-trigger { position: relative; }
 
     .cart-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: var(--carnita-accent);
-      color: var(--garnet-dark);
-      font-size: 0.75rem;
-      font-weight: bold;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: -5px; right: -5px;
+      background: var(--carnita-accent); color: var(--garnet-dark);
+      font-size: 0.75rem; font-weight: bold;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* GRID DE PRODUCTOS */
-    .container {
-      max-width: 1100px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
+    .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
 
     .section-title {
       color: var(--carnita-accent);
@@ -124,35 +96,12 @@
       gap: 20px;
     }
 
-    .item-card {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+    .item-card { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+    .item-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .item-card p { color: #ccc; font-size: 0.85rem; margin-bottom: 15px; }
+    .item-price { color: var(--carnita-accent); font-size: 1.2rem; font-weight: bold; }
 
-    .item-card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-    }
-
-    .item-card p {
-      color: #ccc;
-      font-size: 0.85rem;
-      margin-bottom: 15px;
-    }
-
-    .item-price {
-      color: var(--carnita-accent);
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    /* SECCIÓN DE EVENTOS (DINÁMICA) */
-    #events-section {
-      display: none; /* Se activa desde Admin */
-      margin-top: 40px;
-    }
+    #events-section { display: none; margin-top: 40px; }
 
     .events-grid {
       display: grid;
@@ -160,108 +109,44 @@
       gap: 20px;
     }
 
-    .package-card {
-      padding: 25px;
-      border: 1px solid var(--carnita-accent);
-      position: relative;
-    }
+    .package-card { padding: 25px; border: 1px solid var(--carnita-accent); position: relative; }
+    .package-card.custom-pkg { border-style: dashed; }
 
-    .package-card.custom-pkg {
-      border-style: dashed;
-    }
-
-    .feature-list {
-      list-style: none;
-      margin: 15px 0;
-    }
-
-    .feature-list li {
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .feature-list { list-style: none; margin: 15px 0; }
+    .feature-list li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
     .feature-list li.check { color: #4EAA25; }
     .feature-list li.cross { color: #E53935; opacity: 0.6; }
 
-    /* MODALES & DRAWERS */
     .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      display: none;
-      justify-content: center;
-      align-items: flex-end;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+      z-index: 1000; display: none; justify-content: center; align-items: flex-end;
     }
 
     .modal-content {
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      overflow-y: auto;
-      border-radius: 30px 30px 0 0;
-      padding: 25px;
-      background: #15151a;
-      border: 1px solid var(--glass-border);
-      transform: translateY(100%);
+      width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto;
+      border-radius: 30px 30px 0 0; padding: 25px; background: #15151a;
+      border: 1px solid var(--glass-border); transform: translateY(100%);
       transition: transform 0.3s var(--spring-easing);
     }
 
-    .modal-overlay.active {
-      display: flex;
-    }
+    .modal-overlay.active { display: flex; }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
 
-    .modal-overlay.active .modal-content {
-      transform: translateY(0);
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--carnita-accent);
-      font-size: 0.85rem;
-    }
-
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; color: var(--carnita-accent); font-size: 0.85rem; }
     .form-group input, .form-group select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      outline: none;
+      width: 100%; padding: 12px; border-radius: 12px;
+      border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
     }
 
-    /* TIMEPICKER RADIAL SIMULADO & DATEPICKER MODERNOS */
-    .picker-container {
-      display: flex;
-      gap: 10px;
-    }
-
+    .picker-container { display: flex; gap: 10px; }
     .wheel-time {
-      flex: 1;
-      height: 100px;
-      overflow-y: scroll;
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      text-align: center;
-      scroll-snap-type: y mandatory;
+      flex: 1; height: 100px; overflow-y: scroll;
+      border: 1px solid var(--glass-border); border-radius: 12px;
+      text-align: center; scroll-snap-type: y mandatory;
     }
-
-    .wheel-time div {
-      height: 40px;
-      line-height: 40px;
-      scroll-snap-align: center;
-      font-size: 1.1rem;
-    }
+    .wheel-time div { height: 40px; line-height: 40px; scroll-snap-align: center; font-size: 1.1rem; }
   </style>
 </head>
 <body>
@@ -276,16 +161,11 @@
 
   <div class="container">
     <h2 class="section-title">Menú Tradicional & Promociones</h2>
-    <div class="grid-menu" id="menu-container">
-      <!-- Cargado dinámicamente -->
-    </div>
+    <div class="grid-menu" id="menu-container"></div>
 
-    <!-- SECCIÓN DE EVENTOS (SWITCH ACTIVABLE DESDE ADMIN) -->
     <div id="events-section">
       <h2 class="section-title">Contratación de Eventos y Banquetes</h2>
-      <div class="events-grid" id="events-container">
-        <!-- Paquetes predefinidos cargados dinámicamente -->
-      </div>
+      <div class="events-grid" id="events-container"></div>
     </div>
   </div>
 
@@ -367,48 +247,56 @@
     </div>
   </div>
 
+  <!-- FIREBASE CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <script>
-    // SINCRONIZACIÓN LOCAL / EN TIEMPO REAL
-    const channel = new BroadcastChannel('tapatos_sync');
-    
-    let cart = [];
-    let state = {
-      eventsActive: true,
-      menu: [
-        { id: 1, name: "Torta Ahogada Clasica", price: 85, desc: "Pan birote salado con carnitas jugosas." },
-        { id: 2, name: "Tacos Dorados (Orden 3)", price: 60, desc: "Rellenos de papa o requesón con carnitas encima." }
-      ],
-      packages: [
-        { id: 'p1', name: "Paquete 50 Personas", capacity: 50, price: 4500, features: [{text:"Carnitas mixtas 12kg", inc: true}, {text:"Salsas y verduras", inc: true}, {text:"Bebidas incluidas", inc: false}] },
-        { id: 'p2', name: "Paquete 100 Personas", capacity: 100, price: 8500, features: [{text:"Carnitas mixtas 25kg", inc: true}, {text:"Salsas y verduras", inc: true}, {text:"Personal de servicio", inc: true}] }
-      ]
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_PROYECTO.firebaseapp.com",
+      databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
+      projectId: "TU_PROYECTO",
+      storageBucket: "TU_PROYECTO.appspot.com",
+      messagingSenderId: "TU_SENDER_ID",
+      appId: "TU_APP_ID"
     };
 
-    function init() {
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let cart = [];
+    let state = { eventsActive: false, menu: {}, packages: {} };
+
+    // Escuchar la base de datos en tiempo real
+    db.ref().on('value', (snapshot) => {
+      const data = snapshot.val() || {};
+      state.eventsActive = data.eventsActive || false;
+      state.menu = data.menu || {};
+      state.packages = data.packages || {};
+      
       renderMenu();
       renderEvents();
-      
-      // Escuchar cambios de Admin en vivo
-      channel.onmessage = (event) => {
-        if(event.data.type === 'UPDATE_STATE') {
-          state = event.data.payload;
-          renderMenu();
-          renderEvents();
-        }
-      };
-    }
+    });
 
     function renderMenu() {
       const container = document.getElementById('menu-container');
-      container.innerHTML = state.menu.map(item => `
+      const items = Object.entries(state.menu);
+      
+      if(items.length === 0) {
+        container.innerHTML = `<p style="color:#888;">No hay productos disponibles por ahora.</p>`;
+        return;
+      }
+
+      container.innerHTML = items.map(([id, item]) => `
         <div class="glass-card item-card">
           <div>
             <h3>${item.name}</h3>
-            <p>${item.desc}</p>
+            <p>${item.desc || ''}</p>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span class="item-price">$${item.price}</span>
-            <button class="btn-floating" onclick="addToCart(${item.id})">+</button>
+            <button class="btn-floating" onclick="addToCart('${id}')">+</button>
           </div>
         </div>
       `).join('');
@@ -416,29 +304,33 @@
 
     function renderEvents() {
       const eventsSec = document.getElementById('events-section');
-      if(!state.eventsActive) {
+      if (!state.eventsActive) {
         eventsSec.style.display = 'none';
         return;
       }
       eventsSec.style.display = 'block';
 
       const container = document.getElementById('events-container');
-      let html = state.packages.map(pkg => `
-        <div class="glass-card package-card">
-          <h3>${pkg.name}</h3>
-          <div class="item-price" style="margin: 10px 0;">$${pkg.price} MXN</div>
-          <ul class="feature-list">
-            ${pkg.features.map(f => `<li class="${f.inc ? 'check' : 'cross'}">${f.inc ? '✔️' : '❌'} ${f.text}</li>`).join('')}
-          </ul>
-          <button class="btn-floating" style="width:100%; justify-content:center;" onclick="openEventModal('${pkg.name}')">Contratar Paquete</button>
-        </div>
-      `).join('');
+      const pkgs = Object.entries(state.packages);
 
-      // Opción de crear paquete personalizado
+      let html = pkgs.map(([id, pkg]) => {
+        const featuresArr = pkg.features ? pkg.features.split(',') : [];
+        return `
+          <div class="glass-card package-card">
+            <h3>${pkg.name}</h3>
+            <div class="item-price" style="margin: 10px 0;">$${pkg.price} MXN</div>
+            <ul class="feature-list">
+              ${featuresArr.map(f => `<li class="check">✔️ ${f.trim()}</li>`).join('')}
+            </ul>
+            <button class="btn-floating" style="width:100%; justify-content:center;" onclick="openEventModal('${pkg.name}')">Contratar Paquete</button>
+          </div>
+        `;
+      }).join('');
+
       html += `
         <div class="glass-card package-card custom-pkg">
           <h3>Diseña tu Paquete</h3>
-          <p style="color:#ccc; font-size:0.85rem; margin: 10px 0;">Arma tu menú a la medida con delimitaciones inteligentes.</p>
+          <p style="color:#ccc; font-size:0.85rem; margin: 10px 0;">Arma tu menú a la medida con reglas automáticas.</p>
           <button class="btn-floating" style="width:100%; justify-content:center;" onclick="openEventModal('Paquete Personalizado')">Crear Mi Paquete</button>
         </div>
       `;
@@ -447,16 +339,18 @@
     }
 
     function addToCart(id) {
-      const item = state.menu.find(m => m.id === id);
-      cart.push(item);
-      updateCartUI();
+      const item = state.menu[id];
+      if(item) {
+        cart.push(item);
+        updateCartUI();
+      }
     }
 
     function updateCartUI() {
       document.getElementById('cart-count').innerText = cart.length;
       const cartItemsContainer = document.getElementById('cart-items');
-      cartItemsContainer.innerHTML = cart.map((item, index) => `
-        <div style="display:flex; justify-style:space-between; margin-bottom:10px;">
+      cartItemsContainer.innerHTML = cart.map(item => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
           <span>${item.name}</span>
           <span>$${item.price}</span>
         </div>
@@ -493,11 +387,9 @@
     }
 
     function submitEvent() {
-      alert("¡Solicitud de evento recibida! Nos pondremos en contacto.");
+      alert("¡Solicitud de evento recibida!");
       document.getElementById('event-modal').classList.remove('active');
     }
-
-    window.onload = init;
   </script>
 </body>
 </html>
