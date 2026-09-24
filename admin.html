@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Los Tapatíos & Carnitas - Menú & Eventos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Los Tapatíos & Carnitas</title>
 
   <!-- Socket.io CDN de tu servidor Render -->
   <script src="https://armm-app.onrender.com/socket.io/socket.io.js"></script>
@@ -12,7 +12,6 @@
     :root {
       --garnet-main: #800020;
       --garnet-light: #a00028;
-      --garnet-dark: #4a0013;
       --carnita-accent: #D9B59C;
       --bg-dark: #0d0d10;
       --glass-bg: rgba(255, 255, 255, 0.05);
@@ -20,242 +19,62 @@
       --spring-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-dark); color: #fff; padding: 20px; max-width: 900px; margin: 0 auto; }
 
-    body {
-      background-color: var(--bg-dark);
-      color: #ffffff;
-      padding-bottom: 100px;
-      overflow-x: hidden;
-    }
-
-    /* GLASSMORPHISM */
-    .glass-card {
+    .glass-panel {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      transition: transform 0.3s var(--spring-easing);
-    }
-
-    /* BOTONES FLOTANTES Y FÍSICA */
-    .btn-floating {
-      background: linear-gradient(135deg, var(--garnet-light), var(--garnet-main));
-      color: #ffffff;
-      border: 1px solid var(--carnita-accent);
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 10px 25px -5px rgba(128, 0, 32, 0.5);
-      transition: transform 0.2s var(--spring-easing), box-shadow 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .btn-floating:active {
-      transform: scale(0.94);
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(13, 13, 16, 0.85);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .brand-title {
-      color: var(--carnita-accent);
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .cart-badge {
-      background: var(--carnita-accent);
-      color: var(--garnet-dark);
-      font-size: 0.75rem;
-      font-weight: bold;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
-
-    .section-title {
-      color: var(--carnita-accent);
-      margin: 30px 0 15px 0;
-      font-size: 1.4rem;
-      border-left: 4px solid var(--garnet-main);
-      padding-left: 10px;
-    }
-
-    /* GRID MENU Y PAQUETES */
-    .grid-layout {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .item-card {
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      margin-bottom: 25px;
     }
 
-    .price-tag {
-      color: var(--carnita-accent);
-      font-size: 1.3rem;
-      font-weight: bold;
+    h1, h2, h3 { color: var(--carnita-accent); margin-bottom: 15px; }
+
+    /* SWITCH TÁCTIL */
+    .switch-row { display: flex; align-items: center; justify-content: space-between; }
+    .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid var(--glass-border);
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px;
+      background-color: white; transition: .4s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--garnet-light); }
+    input:checked + .slider:before { transform: translateX(26px); }
+
+    .btn-action {
+      background: linear-gradient(135deg, var(--garnet-light), var(--garnet-main));
+      color: #fff; border: 1px solid var(--carnita-accent);
+      padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer;
+      transition: transform 0.2s var(--spring-easing);
+    }
+    .btn-action:active { transform: scale(0.94); }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; margin-bottom: 4px; color: var(--carnita-accent); font-size: 0.85rem; }
+    input {
+      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
     }
 
-    /* INCLUSIONES / PALOMITAS Y TACHES */
-    .inclusion-list {
-      list-style: none;
-      margin: 15px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    /* MATRIZ CHECKBOXES ESTILO EXAMEN */
+    .checkbox-matrix {
+      display: flex; flex-direction: column; gap: 8px; margin: 15px 0;
+      background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px;
     }
-    .inclusion-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      color: #dddddd;
-    }
-    .icon-check { color: #2ecc71; font-weight: bold; }
-    .icon-cross { color: #e74c3c; opacity: 0.6; text-decoration: line-through; }
+    .matrix-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; }
 
-    /* MODALES FLUIDOS */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      overflow-y: auto;
-      border-radius: 30px 30px 0 0;
-      padding: 25px;
-      background: #15151a;
-      border: 1px solid var(--glass-border);
-      transform: translateY(100%);
-      transition: transform 0.35s var(--spring-easing);
-    }
-    .modal-overlay.active .modal-content {
-      transform: translateY(0);
-    }
-
-    .form-group { margin-bottom: 15px; }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--carnita-accent);
-      font-size: 0.85rem;
-    }
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      outline: none;
-    }
-
-    /* WHEEL TIME PICKER RADIAL */
-    .wheel-time {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding: 10px 0;
-      scroll-snap-type: x mandatory;
-    }
-    .time-slot {
-      flex: 0 0 90px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid var(--glass-border);
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      cursor: pointer;
-      scroll-snap-align: center;
-      transition: all 0.2s ease;
-    }
-    .time-slot.selected {
-      background: var(--garnet-main);
-      border-color: var(--carnita-accent);
-      font-weight: bold;
-    }
-
-    /* NOTIFICACIONES TOAST (ZERO ALERT) */
-    #toast-container {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: none;
-    }
+    /* TOAST BANNER */
+    #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; }
     .toast-banner {
-      background: rgba(21, 21, 26, 0.95);
-      border: 1px solid var(--carnita-accent);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 50px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      backdrop-filter: blur(15px);
-      font-size: 0.9rem;
-      font-weight: 600;
-      opacity: 0;
-      transform: translateY(-20px) scale(0.9);
-      animation: toastIn 0.3s forwards var(--spring-easing);
-    }
-    @keyframes toastIn {
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      background: rgba(21, 21, 26, 0.95); border: 1px solid var(--carnita-accent);
+      color: #fff; padding: 12px 24px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(15px);
     }
   </style>
 </head>
@@ -263,225 +82,133 @@
 
   <div id="toast-container"></div>
 
-  <header>
-    <div class="brand-title">LOS TAPATÍOS & CARNITAS</div>
-    <button class="btn-floating" onclick="toggleCartModal()">
-      🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
-    </button>
-  </header>
+  <h1>Panel de Administración</h1>
 
-  <div class="container">
-    <h2 class="section-title">Menú Tradicional & Promociones</h2>
-    <div class="grid-layout" id="menu-container"></div>
-
-    <div id="events-section" style="display: none;">
-      <h2 class="section-title">Contratación de Eventos y Banquetes</h2>
-      <div class="grid-layout" id="events-container"></div>
+  <!-- SWITCH GENERAL DE EVENTOS -->
+  <div class="glass-panel switch-row">
+    <div>
+      <h2>Módulo de Eventos en Web Pública</h2>
+      <p style="color:#aaa; font-size:0.85rem;">Muestra u oculta la sección de banquetes de inmediato.</p>
     </div>
+    <label class="switch">
+      <input type="checkbox" id="events-toggle" onchange="toggleEventsModule(this.checked)">
+      <span class="slider"></span>
+    </label>
   </div>
 
-  <!-- MODAL CARRITO -->
-  <div class="modal-overlay" id="cart-modal">
-    <div class="modal-content">
-      <h2 style="color:var(--carnita-accent); margin-bottom: 15px;">Tu Pedido</h2>
-      <div id="cart-items-list" style="margin-bottom: 15px;"></div>
-      <h3 style="text-align: right; margin-bottom: 15px; color: var(--carnita-accent);">Total: <span id="cart-total">$0</span></h3>
-
-      <div class="form-group">
-        <label>Tipo de Entrega</label>
-        <select id="delivery-type" onchange="document.getElementById('address-field').style.display = this.value === 'delivery' ? 'block' : 'none'">
-          <option value="pickup">Recoger en Sucursal</option>
-          <option value="delivery">A Domicilio</option>
-        </select>
-      </div>
-
-      <div class="form-group" id="address-field" style="display:none;">
-        <label>Dirección Completa</label>
-        <input type="text" id="cust-address" placeholder="Calle, número, colonia...">
-      </div>
-
-      <div class="form-group">
-        <label>Método de Pago</label>
-        <select id="payment-method" onchange="document.getElementById('cash-field').style.display = this.value === 'cash' ? 'block' : 'none'">
-          <option value="cash">Efectivo</option>
-          <option value="card">Tarjeta al entregar</option>
-          <option value="transfer">Transferencia</option>
-        </select>
-      </div>
-
-      <div class="form-group" id="cash-field">
-        <label>¿Con cuánto vas a pagar? (Para cambio)</label>
-        <input type="number" id="cash-amount" placeholder="Ej: $500">
-      </div>
-
-      <button class="btn-floating" style="width:100%;" onclick="submitOrder()">Confirmar Pedido</button>
+  <!-- CREADOR DE INCLUSIONES TIPO OPCIÓN MÚLTIPLE -->
+  <div class="glass-panel">
+    <h2>1. Banco Global de Inclusiones (Reactivos)</h2>
+    <div style="display:flex; gap:10px;">
+      <input type="text" id="new-inclusion-text" placeholder="Ej: 12kg Carnitas, Servicio 4hrs, Meseros...">
+      <button class="btn-action" onclick="addGlobalInclusion()">Añadir</button>
     </div>
+    <div id="global-inclusions-list" style="margin-top:10px; font-size:0.85rem; color:#ccc;"></div>
   </div>
 
-  <!-- MODAL AGENDAR EVENTO -->
-  <div class="modal-overlay" id="event-modal">
-    <div class="modal-content">
-      <h2 style="color:var(--carnita-accent); margin-bottom: 15px;" id="event-modal-title">Agendar Evento</h2>
+  <!-- CREAR PAQUETE DE EVENTO -->
+  <div class="glass-panel">
+    <h2>2. Publicar Paquete de Evento</h2>
+    <div class="form-group"><label>Nombre del Paquete</label><input type="text" id="pkg-name" placeholder="Ej: Paquete 100 Personas"></div>
+    <div class="form-group"><label>Precio ($)</label><input type="number" id="pkg-price" placeholder="Ej: 8500"></div>
+    
+    <label style="color:var(--carnita-accent); font-size:0.85rem;">Selecciona las Inclusiones (✔️ Incluido / ❌ No incluido)</label>
+    <div class="checkbox-matrix" id="package-inclusions-matrix"></div>
 
-      <div class="form-group">
-        <label>Nombre Completo</label>
-        <input type="text" id="ev-name" placeholder="Tu nombre">
-      </div>
-      <div class="form-group">
-        <label>Teléfono</label>
-        <input type="tel" id="ev-phone" placeholder="33 0000 0000">
-      </div>
-      <div class="form-group">
-        <label>Dirección del Evento</label>
-        <input type="text" id="ev-address" placeholder="Lugar o domicilio del banquete">
-      </div>
-      <div class="form-group">
-        <label>Fecha del Evento (Calendario)</label>
-        <input type="date" id="ev-date">
-      </div>
-      <div class="form-group">
-        <label>Hora de Inicio (Selector Táctil)</label>
-        <div class="wheel-time">
-          <div class="time-slot" onclick="selectTimeSlot(this)">12:00 PM</div>
-          <div class="time-slot" onclick="selectTimeSlot(this)">02:00 PM</div>
-          <div class="time-slot" onclick="selectTimeSlot(this)">04:00 PM</div>
-          <div class="time-slot" onclick="selectTimeSlot(this)">06:00 PM</div>
-          <div class="time-slot" onclick="selectTimeSlot(this)">08:00 PM</div>
-        </div>
-      </div>
+    <button class="btn-action" onclick="publishPackage()">Publicar Paquete</button>
+  </div>
 
-      <button class="btn-floating" style="width:100%;" onclick="submitEventBooking()">Confirmar Reservación</button>
-    </div>
+  <!-- CREAR PLATILLO MENÚ TRADICIONAL -->
+  <div class="glass-panel">
+    <h2>3. Publicar Platillo en el Menú</h2>
+    <div class="form-group"><label>Nombre del Platillo</label><input type="text" id="menu-name" placeholder="Ej: Torta Ahogada Clásica"></div>
+    <div class="form-group"><label>Precio ($)</label><input type="number" id="menu-price" placeholder="Ej: 85"></div>
+    <button class="btn-action" onclick="publishMenuItem()">Publicar Platillo</button>
   </div>
 
   <script>
-    // Conexión WebSockets directa al servidor en Render
     const socket = io("https://armm-app.onrender.com");
 
-    let appData = { eventsActive: true, menu: [], packages: [] };
-    let cart = [];
-    let selectedTime = "";
-    let currentSelectedPkg = null;
+    let state = {
+      eventsActive: true,
+      globalInclusions: ["12kg Carnitas Tradicionales", "Salsas y Verduras", "Servicio de 4 Horas", "Meseros Uniformados"],
+      menu: [],
+      packages: []
+    };
 
-    // SISTEMA TOAST (Sin alert)
-    function showToast(message) {
+    function showToast(msg) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       toast.className = 'toast-banner';
-      toast.innerText = message;
+      toast.innerText = msg;
       container.appendChild(toast);
-      setTimeout(() => { toast.remove(); }, 2500);
+      setTimeout(() => toast.remove(), 2500);
     }
-
-    socket.on('connect', () => {
-      showToast("Conectado en tiempo real");
-    });
 
     socket.on('update_data', (data) => {
-      appData = data;
-      renderPublicWeb();
+      state = data;
+      if(!state.globalInclusions) state.globalInclusions = ["12kg Carnitas Tradicionales", "Salsas y Verduras"];
+      document.getElementById('events-toggle').checked = state.eventsActive;
+      renderAdminUI();
     });
 
-    function renderPublicWeb() {
-      // 1. Menú
-      const menuContainer = document.getElementById('menu-container');
-      menuContainer.innerHTML = appData.menu.map((item, idx) => `
-        <div class="glass-card item-card">
-          <div>
-            <h3 style="color:#fff;">${item.name}</h3>
-            <p style="color:#aaa; font-size:0.85rem; margin-top:5px;">${item.desc || ''}</p>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-            <span class="price-tag">$${item.price}</span>
-            <button class="btn-floating" onclick="addToCart(${idx})">+</button>
-          </div>
-        </div>
-      `).join('');
+    function renderAdminUI() {
+      // Render Banco Global
+      document.getElementById('global-inclusions-list').innerHTML = "Inclusiones registradas: " + state.globalInclusions.join(', ');
 
-      // 2. Sección Eventos
-      const eventsSection = document.getElementById('events-section');
-      eventsSection.style.display = appData.eventsActive ? 'block' : 'none';
-
-      const eventsContainer = document.getElementById('events-container');
-      eventsContainer.innerHTML = appData.packages.map((pkg, idx) => `
-        <div class="glass-card item-card" style="border-color: var(--carnita-accent);">
-          <div>
-            <h3 style="color:var(--carnita-accent);">${pkg.name}</h3>
-            <div class="price-tag" style="margin:10px 0;">$${pkg.price} MXN</div>
-            <ul class="inclusion-list">
-              ${pkg.inclusions ? pkg.inclusions.map(inc => `
-                <li class="inclusion-item">
-                  <span class="${inc.included ? 'icon-check' : 'icon-cross'}">${inc.included ? '✔️' : '❌'}</span>
-                  <span>${inc.text}</span>
-                </li>
-              `).join('') : ''}
-            </ul>
-          </div>
-          <button class="btn-floating" style="width:100%; margin-top:15px;" onclick="openBookingModal(${idx})">Contratar Banquete</button>
+      // Render Matriz de Selección
+      const matrix = document.getElementById('package-inclusions-matrix');
+      matrix.innerHTML = state.globalInclusions.map((text, idx) => `
+        <div class="matrix-item">
+          <span>${text}</span>
+          <input type="checkbox" id="inc-chk-${idx}" checked style="width:auto;">
         </div>
       `).join('');
     }
 
-    function addToCart(idx) {
-      cart.push(appData.menu[idx]);
-      updateCartUI();
-      showToast("Agregado al carrito");
+    function toggleEventsModule(val) {
+      state.eventsActive = val;
+      sync();
+      showToast("Estado de eventos actualizado");
     }
 
-    function updateCartUI() {
-      document.getElementById('cart-count').innerText = cart.length;
-      const list = document.getElementById('cart-items-list');
-      let total = 0;
-      list.innerHTML = cart.map((item, i) => {
-        total += parseFloat(item.price);
-        return `<div style="display:flex; justify-style:space-between; margin-bottom:8px;">
-          <span>${item.name}</span>
-          <span>$${item.price}</span>
-        </div>`;
-      }).join('');
-      document.getElementById('cart-total').innerText = `$${total}`;
+    function addGlobalInclusion() {
+      const txt = document.getElementById('new-inclusion-text').value;
+      if(txt) {
+        state.globalInclusions.push(txt);
+        document.getElementById('new-inclusion-text').value = '';
+        sync();
+        showToast("Reactivo agregado al banco");
+      }
     }
 
-    function toggleCartModal() {
-      document.getElementById('cart-modal').classList.toggle('active');
+    function publishPackage() {
+      const name = document.getElementById('pkg-name').value;
+      const price = document.getElementById('pkg-price').value;
+      if(!name || !price) return showToast("Ingresa nombre y precio");
+
+      const inclusions = state.globalInclusions.map((text, idx) => ({
+        text: text,
+        included: document.getElementById(`inc-chk-${idx}`).checked
+      }));
+
+      state.packages.push({ name, price: parseFloat(price), inclusions });
+      sync();
+      showToast("Paquete publicado en tiempo real");
     }
 
-    function openBookingModal(pkgIdx) {
-      currentSelectedPkg = appData.packages[pkgIdx];
-      document.getElementById('event-modal-title').innerText = `Agendar: ${currentSelectedPkg.name}`;
-      document.getElementById('event-modal').classList.add('active');
+    function publishMenuItem() {
+      const name = document.getElementById('menu-name').value;
+      const price = document.getElementById('menu-price').value;
+      if(name && price) {
+        state.menu.push({ name, price: parseFloat(price) });
+        sync();
+        showToast("Platillo publicado");
+      }
     }
 
-    function selectTimeSlot(el) {
-      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedTime = el.innerText;
-    }
-
-    function submitOrder() {
-      if(cart.length === 0) return showToast("El carrito está vacío");
-      socket.emit('new_order', { cart, total: document.getElementById('cart-total').innerText });
-      cart = [];
-      updateCartUI();
-      toggleCartModal();
-      showToast("¡Pedido recibido con éxito!");
-    }
-
-    function submitEventBooking() {
-      const name = document.getElementById('ev-name').value;
-      const date = document.getElementById('ev-date').value;
-      if(!name || !date || !selectedTime) return showToast("Completa los datos y la hora");
-
-      socket.emit('new_booking', {
-        package: currentSelectedPkg.name,
-        name,
-        date,
-        time: selectedTime,
-        address: document.getElementById('ev-address').value
-      });
-
-      document.getElementById('event-modal').classList.remove('active');
-      showToast("¡Reservación agendada exitosamente!");
+    function sync() {
+      socket.emit('admin_update_data', state);
     }
   </script>
 </body>
