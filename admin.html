@@ -6,207 +6,114 @@
   <title>Admin - Los Tapatíos & Carnitas</title>
   <style>
     :root {
-      --garnet-main: #800020;
-      --garnet-light: #a00028;
-      --carnita-accent: #D9B59C;
-      --bg-dark: #0d0d10;
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(217, 181, 156, 0.2);
+      --garnet-main: #800020; --garnet-light: #a00028; --carnita-accent: #D9B59C;
+      --bg-dark: #0d0d10; --glass-bg: rgba(255, 255, 255, 0.05); --glass-border: rgba(217, 181, 156, 0.2);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--bg-dark); color: #fff; padding: 20px; }
 
-    .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 25px;
-    }
-
-    h1, h2, h3 { color: var(--carnita-accent); margin-bottom: 15px; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 25px; }
+    h1, h2 { color: var(--carnita-accent); margin-bottom: 15px; }
 
     .switch-container { display: flex; align-items: center; justify-content: space-between; }
     .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #333; transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      border-radius: 34px; border: 1px solid var(--glass-border);
+      background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid var(--glass-border);
     }
     .slider:before {
       position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px;
-      background-color: white; transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 50%;
+      background-color: white; transition: .4s; border-radius: 50%;
     }
     input:checked + .slider { background-color: var(--garnet-light); }
     input:checked + .slider:before { transform: translateX(26px); }
 
-    .btn-action {
-      background: var(--garnet-main); color: #fff; border: 1px solid var(--carnita-accent);
-      padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: bold;
-    }
-    .btn-danger { background: #a00000; border-color: #ff5555; }
-
+    .btn-action { background: var(--garnet-main); color: #fff; border: 1px solid var(--carnita-accent); padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; margin-bottom: 4px; color: var(--carnita-accent); font-size: 0.85rem; }
-    input, textarea {
-      width: 100%; padding: 10px; border-radius: 8px;
-      border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
-    }
-
-    .item-list { list-style: none; margin-top: 15px; }
-    .item-list li {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px; border-bottom: 1px solid var(--glass-border);
-    }
+    input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; }
   </style>
 </head>
 <body>
 
-  <h1>Panel de Administración</h1>
+  <h1>Panel de Control</h1>
 
-  <!-- SWITCH DISPONIBILIDAD EVENTOS -->
   <div class="glass-panel switch-container">
     <div>
-      <h2>Activar Módulo de Eventos</h2>
-      <p style="color:#ccc; font-size: 0.9rem;">Muestra u oculta la sección de banquetes en la Web Pública al instante.</p>
+      <h2>Módulo de Eventos en Web Pública</h2>
+      <p style="color:#ccc; font-size: 0.9rem;">Prende o apaga la pestaña de banquetes en tiempo real.</p>
     </div>
     <label class="switch">
-      <input type="checkbox" id="events-toggle" onchange="toggleEvents(this.checked)">
+      <input type="checkbox" id="events-toggle" checked onchange="toggleEvents(this.checked)">
       <span class="slider"></span>
     </label>
   </div>
 
-  <!-- GESTIÓN DE MENÚ Y ALIMENTOS -->
   <div class="glass-panel">
-    <h2>Gestión del Menú (Comida Rápida)</h2>
-    <div class="form-group">
-      <label>Nombre del Alimento</label>
-      <input type="text" id="menu-name" placeholder="Ej: Torta Ahogada">
-    </div>
-    <div class="form-group">
-      <label>Precio ($)</label>
-      <input type="number" id="menu-price" placeholder="Ej: 85">
-    </div>
-    <div class="form-group">
-      <label>Descripción / Ingredientes</label>
-      <textarea id="menu-desc" rows="2" placeholder="Pan birote, carnitas..."></textarea>
-    </div>
-    <button class="btn-action" onclick="addMenuItem()">+ Agregar Alimento</button>
-
-    <h3 style="margin-top:20px;">Platillos Actuales</h3>
-    <ul class="item-list" id="menu-items-list"></ul>
+    <h2>Publicar Nuevo Platillo</h2>
+    <div class="form-group"><label>Nombre</label><input type="text" id="m-name" placeholder="Ej: Torta Ahogada"></div>
+    <div class="form-group"><label>Precio ($)</label><input type="number" id="m-price" placeholder="Ej: 85"></div>
+    <button class="btn-action" onclick="addMenu()">Publicar en Web</button>
   </div>
 
-  <!-- GESTIÓN DE PAQUETES DE EVENTOS -->
   <div class="glass-panel">
-    <h2>Gestión de Paquetes para Eventos</h2>
-    <div class="form-group">
-      <label>Nombre del Paquete</label>
-      <input type="text" id="pkg-name" placeholder="Ej: Paquete 100 Personas">
-    </div>
-    <div class="form-group">
-      <label>Precio Total ($)</label>
-      <input type="number" id="pkg-price" placeholder="Ej: 8500">
-    </div>
-    <div class="form-group">
-      <label>Inclusiones (Separadas por comas)</label>
-      <input type="text" id="pkg-features" placeholder="Carnitas 25kg, Salsas, Servicio 4hrs">
-    </div>
-    <button class="btn-action" onclick="addPackage()">+ Agregar Paquete de Evento</button>
-
-    <h3 style="margin-top:20px;">Paquetes Configurados</h3>
-    <ul class="item-list" id="package-items-list"></ul>
+    <h2>Publicar Paquete de Evento</h2>
+    <div class="form-group"><label>Nombre del Paquete</label><input type="text" id="p-name" placeholder="Ej: Paquete 100 Personas"></div>
+    <div class="form-group"><label>Precio ($)</label><input type="number" id="p-price" placeholder="Ej: 8500"></div>
+    <div class="form-group"><label>Inclusiones</label><input type="text" id="p-feat" placeholder="Carnitas 25kg, Salsas, Servicio"></div>
+    <button class="btn-action" onclick="addPkg()">Publicar Paquete</button>
   </div>
 
-  <!-- FIREBASE CDN -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
+  <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.min.js"></script>
   <script>
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_PROYECTO.firebaseapp.com",
-      databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
-      projectId: "TU_PROYECTO",
-      storageBucket: "TU_PROYECTO.appspot.com",
-      messagingSenderId: "TU_SENDER_ID",
-      appId: "TU_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Cargar datos actuales
-    db.ref().on('value', (snapshot) => {
-      const data = snapshot.val() || {};
-      document.getElementById('events-toggle').checked = data.eventsActive || false;
-
-      renderMenuList(data.menu || {});
-      renderPackageList(data.packages || {});
+    const pubnub = new PubNub({
+      publishKey: "pub-c-89736e0d-b4b1-4f1d-b82b-6c4ff5511bd9",
+      subscribeKey: "sub-c-e3627d3b-6351-4d37-a25e-3ca9762fa53e",
+      userId: "user_admin"
     });
 
-    function toggleEvents(active) {
-      db.ref('eventsActive').set(active);
+    let state = {
+      eventsActive: true,
+      menu: [{ name: "Torta Ahogada Clásica", price: 85, desc: "Birote salado con carnitas" }],
+      packages: [{ name: "Paquete 50 Personas", price: 4500, features: "12kg Carnitas, Salsas, Verduras" }]
+    };
+
+    function publishState() {
+      pubnub.publish({
+        channel: 'tapatios_channel',
+        message: state
+      });
     }
 
-    // AGREGAR Y ELIMINAR PLATILLOS
-    function addMenuItem() {
-      const name = document.getElementById('menu-name').value;
-      const price = document.getElementById('menu-price').value;
-      const desc = document.getElementById('menu-desc').value;
+    function toggleEvents(val) {
+      state.eventsActive = val;
+      publishState();
+    }
 
+    function addMenu() {
+      const name = document.getElementById('m-name').value;
+      const price = document.getElementById('m-price').value;
       if(name && price) {
-        db.ref('menu').push({ name, price: parseFloat(price), desc });
-        document.getElementById('menu-name').value = '';
-        document.getElementById('menu-price').value = '';
-        document.getElementById('menu-desc').value = '';
+        state.menu.push({ name, price: parseFloat(price) });
+        publishState();
+        alert("¡Platillo enviado a todos los dispositivos!");
       }
     }
 
-    function deleteMenuItem(id) {
-      db.ref('menu/' + id).remove();
-    }
-
-    function renderMenuList(menuObj) {
-      const list = document.getElementById('menu-items-list');
-      list.innerHTML = Object.entries(menuObj).map(([id, item]) => `
-        <li>
-          <span><strong>${item.name}</strong> - $${item.price}</span>
-          <button class="btn-action btn-danger" onclick="deleteMenuItem('${id}')">Eliminar</button>
-        </li>
-      `).join('');
-    }
-
-    // AGREGAR Y ELIMINAR PAQUETES DE EVENTOS
-    function addPackage() {
-      const name = document.getElementById('pkg-name').value;
-      const price = document.getElementById('pkg-price').value;
-      const features = document.getElementById('pkg-features').value;
-
+    function addPkg() {
+      const name = document.getElementById('p-name').value;
+      const price = document.getElementById('p-price').value;
+      const features = document.getElementById('p-feat').value;
       if(name && price) {
-        db.ref('packages').push({ name, price: parseFloat(price), features });
-        document.getElementById('pkg-name').value = '';
-        document.getElementById('pkg-price').value = '';
-        document.getElementById('pkg-features').value = '';
+        state.packages.push({ name, price: parseFloat(price), features });
+        publishState();
+        alert("¡Paquete de evento publicado!");
       }
     }
 
-    function deletePackage(id) {
-      db.ref('packages/' + id).remove();
-    }
-
-    function renderPackageList(pkgObj) {
-      const list = document.getElementById('package-items-list');
-      list.innerHTML = Object.entries(pkgObj).map(([id, pkg]) => `
-        <li>
-          <span><strong>${pkg.name}</strong> - $${pkg.price}</span>
-          <button class="btn-action btn-danger" onclick="deletePackage('${id}')">Eliminar</button>
-        </li>
-      `).join('');
-    }
+    // Publicar estado inicial al abrir
+    setTimeout(publishState, 1000);
   </script>
 </body>
 </html>
