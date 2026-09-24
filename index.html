@@ -1,57 +1,46 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tortas Ahogadas Los Tapatíos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tortas Ahogadas Los Tapatíos - Pedidos Online</title>
     <style>
         :root {
             --granate: #800020;
+            --granate-light: #a00028;
             --granate-dark: #4a0013;
             --carnita: #D9B59C;
-            --bg-dark: #121212;
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(217, 181, 156, 0.25);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --bg-dark: #0d0d10;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(217, 181, 156, 0.2);
+            --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         body {
             margin: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-dark);
             color: #f5f5f5;
             overflow-x: hidden;
+            padding-bottom: 40px;
         }
 
-        /* EFECTO LIQUID GLASS & ANIMACIONES */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            border-radius: 18px;
             box-shadow: var(--glass-shadow);
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* HEADER & LOGO */
         header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(18, 18, 18, 0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(13, 13, 16, 0.88);
+            backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--glass-border);
             padding: 12px 5%;
             display: flex;
@@ -59,353 +48,326 @@
             align-items: center;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-img {
-            height: 60px;
-            filter: drop-shadow(0 2px 8px rgba(128, 0, 32, 0.6));
-        }
-
         .brand-title {
             color: var(--carnita);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
             margin: 0;
-            border-left: 3px solid var(--granate);
-            padding-left: 10px;
+            line-height: 1.1;
+            letter-spacing: 0.5px;
         }
 
         .cart-btn {
+            position: relative;
             background: linear-gradient(135deg, var(--granate), var(--granate-dark));
             color: var(--carnita);
             border: 1px solid var(--carnita);
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 30px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.4);
-        }
-        .cart-btn:hover { transform: scale(1.05); }
-
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-
-        /* BANNER AREA DE NIÑOS */
-        .kids-banner {
-            background: linear-gradient(135deg, rgba(128,0,32,0.8), rgba(18,18,18,0.9)), url('https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?q=80&w=1000') center/cover;
-            padding: 25px;
-            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(128, 0, 32, 0.5);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-left: 5px solid var(--carnita);
+            gap: 8px;
         }
-        .kids-banner h3 { margin: 0; color: var(--carnita); font-size: 1.5rem; }
-        .kids-banner p { margin: 5px 0 0 0; color: #ccc; }
+        .cart-btn:active { transform: scale(0.95); }
 
-        /* CATALOGO */
-        .category-title {
-            color: var(--carnita);
-            font-size: 1.6rem;
-            border-bottom: 2px solid var(--granate);
-            padding-bottom: 8px;
-            margin: 35px 0 20px 0;
-            text-transform: uppercase;
+        .badge-count {
+            background: var(--carnita);
+            color: var(--granate-dark);
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.85rem;
+            font-weight: 900;
         }
+
+        .container { max-width: 1100px; margin: 25px auto; padding: 0 15px; }
+
+        .kids-banner {
+            background: linear-gradient(135deg, rgba(128,0,32,0.85), rgba(13,13,16,0.95)), url('https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?q=80&w=1000') center/cover;
+            padding: 22px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--carnita);
+        }
+        .kids-banner h3 { margin: 0; color: var(--carnita); font-size: 1.3rem; }
+        .kids-banner p { margin: 6px 0 0 0; color: #ccc; font-size: 0.95rem; }
+
+        .category-nav {
+            display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;
+        }
+        .cat-pill {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: #ccc; padding: 8px 18px; border-radius: 20px; font-weight: 600; cursor: pointer; white-space: nowrap;
+        }
+        .cat-pill.active { background: var(--granate); color: white; border-color: var(--carnita); }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
         .card {
-            padding: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--carnita); }
-        .card h4 { margin: 0 0 10px 0; color: #fff; font-size: 1.2rem; }
-        .card p { color: #aaa; font-size: 0.9rem; margin-bottom: 15px; }
-        .card .price { color: var(--carnita); font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; }
+        .card:hover { border-color: var(--carnita); transform: translateY(-3px); }
+        .card h4 { margin: 0 0 8px 0; color: #fff; font-size: 1.15rem; }
+        .card p { color: #aaa; font-size: 0.88rem; margin-bottom: 15px; line-height: 1.4; }
+        .card .price { color: var(--carnita); font-weight: 800; font-size: 1.3rem; }
 
         .add-btn {
             background: var(--granate);
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
+            width: 100%;
         }
-        .add-btn:hover { background: #a00028; }
+        .add-btn:hover { background: var(--granate-light); }
 
-        /* MODAL / PANEL DE CARRITO (DESPLAZABLE DESDE LA DERECHA) */
         .cart-drawer {
             position: fixed;
-            top: 0; right: -450px;
-            width: 100%; max-width: 420px;
+            top: 0; right: -480px;
+            width: 100%; max-width: 440px;
             height: 100vh;
-            background: rgba(18, 18, 18, 0.95);
-            backdrop-filter: blur(25px);
+            background: rgba(13, 13, 16, 0.96);
+            backdrop-filter: blur(30px);
             border-left: 1px solid var(--glass-border);
             z-index: 1000;
-            padding: 25px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            box-shadow: -15px 0 40px rgba(0,0,0,0.8);
         }
         .cart-drawer.open { right: 0; }
 
-        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
-        .cart-items { flex: 1; overflow-y: auto; margin: 20px 0; }
-        .cart-item { display: flex; justify-content: space-between; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; }
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; background: rgba(255,255,255,0.03);
+            padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+        }
 
-        /* FORMULARIOS DE ENVIO */
-        .delivery-opts { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; border-radius: 8px; cursor: pointer; }
-        .tab-btn.active { background: var(--granate); border-color: var(--carnita); }
+        .qty-btn {
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            width: 26px; height: 26px; border-radius: 6px; font-weight: bold; cursor: pointer;
+        }
 
-        .input-group { margin-bottom: 10px; }
         .input-group input, .input-group select {
-            width: 100%; padding: 10px;
-            background: rgba(255,255,255,0.08);
+            width: 100%; padding: 11px; margin-bottom: 10px;
+            background: rgba(255,255,255,0.06);
             border: 1px solid var(--glass-border);
-            border-radius: 6px; color: white;
-            color-scheme: dark;
+            border-radius: 8px; color: white; font-size: 15px; color-scheme: dark;
         }
 
-        .pago-opciones { display: flex; gap: 8px; margin: 10px 0; }
-        .pago-btn {
-            flex: 1; padding: 8px; text-align: center;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            border-radius: 6px; cursor: pointer; font-size: 0.85rem;
-        }
-        .pago-btn.activo { background: var(--granate); border-color: var(--carnita); font-weight: bold; }
-
-        /* NOTIFICACION FLOTANTE EN TIEMPO REAL */
         .toast {
             position: fixed; bottom: 20px; right: 20px;
             background: var(--granate); color: white;
-            padding: 15px 25px; border-radius: 12px;
+            padding: 15px 22px; border-radius: 12px;
             border: 1px solid var(--carnita);
             box-shadow: var(--glass-shadow);
-            display: none; z-index: 2000;
+            display: none; z-index: 2000; font-size: 0.95rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-container">
-            <svg class="logo-img" viewBox="0 0 100 100">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <svg style="height: 50px; filter: drop-shadow(0 2px 6px rgba(128,0,32,0.6));" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="#800020" stroke="#D9B59C" stroke-width="3"/>
                 <path d="M 25,50 Q 50,20 75,50 Q 50,80 25,50 Z" fill="#D9B59C"/>
-                <text x="50" y="55" font-size="14" font-weight="bold" fill="#800020" text-anchor="middle">LOS TAPATÍOS</text>
+                <text x="50" y="55" font-size="13" font-weight="bold" fill="#800020" text-anchor="middle">LOS TAPATÍOS</text>
             </svg>
-            <h1 class="brand-title">Tortas Ahogadas<br><span style="font-size:0.8rem; color:#fff;">Los Tapatíos</span></h1>
+            <h1 class="brand-title">Tortas Ahogadas<br><span style="font-size: 0.78rem; color: #fff; font-weight: 400;">Los Tapatíos Y Carnitas</span></h1>
         </div>
-        <button class="cart-btn" onclick="toggleCarrito()">🛒 Carrito (<span id="cartCount">0</span>)</button>
+        <button class="cart-btn" onclick="toggleCarrito()">
+            🛒 <span>Mi Orden</span>
+            <span class="badge-count" id="cartCount">0</span>
+        </button>
     </header>
 
     <div class="container">
         
-        <!-- BANNER ÁREA PARA NIÑOS -->
-        <div class="kids-banner glass-card reveal active">
-            <div>
-                <h3>¡Contamos con Área Infantil! 🎈</h3>
-                <p>Disfruta tus tortas ahogadas mientras tus pequeños se divierten en un espacio cómodo y seguro.</p>
-            </div>
+        <div class="kids-banner glass-card">
+            <h3>¡Zona Infantil Disponible! 🎈</h3>
+            <p>Disfruta el auténtico sabor tapatío mientras tus niños se divierten en un espacio diseñado para ellos.</p>
         </div>
 
-        <!-- CONTENEDOR DINÁMICO DE MENÚ -->
+        <div class="category-nav" id="catFilters"></div>
+
         <div id="menuContainer"></div>
 
     </div>
 
-    <!-- PANEL CARRITO DESPLEGABLE -->
     <div class="cart-drawer" id="cartDrawer">
-        <div class="cart-header">
-            <h3 style="margin:0; color:var(--carnita);">Tu Pedido</h3>
-            <button style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;" onclick="toggleCarrito()">✕</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;">
+            <h3 style="margin:0; color:var(--carnita);">Detalle de tu Pedido</h3>
+            <button style="background:none; border:none; color:white; font-size:1.6rem; cursor:pointer;" onclick="toggleCarrito()">✕</button>
         </div>
 
-        <div class="cart-items" id="cartItems">
-            <p style="text-align:center; color:#888;">El carrito está vacío</p>
-        </div>
+        <div style="flex: 1; overflow-y: auto; margin: 15px 0;" id="cartItems"></div>
 
         <div style="border-top:1px solid var(--glass-border); padding-top:15px;">
-            <p style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:bold;">
-                <span>Total:</span> <span style="color:var(--carnita);">$<span id="cartTotal">0.00</span></span>
-            </p>
-
-            <div class="delivery-opts">
-                <button class="tab-btn active" id="btnDom" onclick="setTipoEntrega('domicilio')">A Domicilio</button>
-                <button class="tab-btn" id="btnSuc" onclick="setTipoEntrega('sucursal')">Paso por él</button>
+            <div style="display:flex; justify-content:space-between; font-size:1.25rem; font-weight:bold; margin-bottom: 15px;">
+                <span>Total a Pagar:</span> <span style="color:var(--carnita);">$<span id="cartTotal">0.00</span></span>
             </div>
 
-            <!-- FORMULARIO A DOMICILIO -->
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button class="add-btn" id="btnDom" style="flex:1; background: var(--granate);" onclick="setTipoEntrega('domicilio')">A Domicilio</button>
+                <button class="add-btn" id="btnSuc" style="flex:1; background: rgba(255,255,255,0.1);" onclick="setTipoEntrega('sucursal')">Paso por él</button>
+            </div>
+
             <div id="formDomicilio">
-                <div class="input-group"><input type="text" id="domNombre" placeholder="Nombre completo"></div>
-                <div class="input-group"><input type="tel" id="domTel" placeholder="Teléfono"></div>
-                <div class="input-group"><input type="text" id="domCalle" placeholder="Calle y Número"></div>
+                <div class="input-group"><input type="text" id="domNombre" placeholder="Tu Nombre"></div>
+                <div class="input-group"><input type="tel" id="domTel" placeholder="Teléfono de Contacto"></div>
+                <div class="input-group"><input type="text" id="domCalle" placeholder="Calle y Número Ext/Int"></div>
                 <div class="input-group"><input type="text" id="domColonia" placeholder="Colonia"></div>
                 <div class="input-group">
                     <select id="domPago">
-                        <option value="">Seleccionar Método de Pago</option>
-                        <option value="Efectivo al recibir">Efectivo al recibir</option>
-                        <option value="Tarjeta al recibir">Tarjeta al recibir</option>
+                        <option value="">Selecciona Método de Pago</option>
+                        <option value="Efectivo al recibir">💵 Efectivo al recibir</option>
+                        <option value="Tarjeta al recibir">💳 Tarjeta (Terminal al recibir)</option>
                     </select>
                 </div>
             </div>
 
-            <!-- FORMULARIO PASO POR MI PEDIDO -->
             <div id="formSucursal" style="display: none;">
-                <div class="input-group"><input type="text" id="sucNombre" placeholder="Nombre completo"></div>
-                <div class="input-group"><input type="tel" id="sucTel" placeholder="Teléfono"></div>
-                <div style="margin-bottom: 15px;">
-                    <label style="color: #D9B59C; font-weight: bold; font-size: 0.9rem;">Método de Pago:</label>
-                    <div class="pago-opciones">
-                        <div class="pago-btn activo" id="pagoEf" onclick="seleccionarPago('Efectivo')">💵 Efectivo</div>
-                        <div class="pago-btn" id="pagoTar" onclick="seleccionarPago('Tarjeta')">💳 Terminal</div>
-                        <div class="pago-btn" id="pagoTrans" onclick="seleccionarPago('Transferencia')">📱 Transfer</div>
-                    </div>
-                    <div id="cambioInput">
-                        <input type="number" id="sucCambio" placeholder="¿Con qué billete pagas? (Para cambio)">
-                    </div>
+                <div class="input-group"><input type="text" id="sucNombre" placeholder="Tu Nombre"></div>
+                <div class="input-group"><input type="tel" id="sucTel" placeholder="Teléfono de Contacto"></div>
+                <div class="input-group">
+                    <select id="sucPago" onchange="toggleCambio(this.value)">
+                        <option value="Efectivo">💵 Efectivo en Caja</option>
+                        <option value="Tarjeta">💳 Tarjeta en Caja</option>
+                        <option value="Transferencia">📱 Transferencia previa</option>
+                    </select>
+                </div>
+                <div class="input-group" id="cambioGroup">
+                    <input type="number" id="sucCambio" placeholder="¿Con cuánto pagas? (Para cambio)">
                 </div>
             </div>
 
-            <button class="add-btn" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 1.1rem;" onclick="confirmarPedido()">Confirmar Pedido</button>
+            <button class="add-btn" style="padding: 14px; font-size: 1.1rem; margin-top: 5px;" onclick="confirmarPedido()">Enviar Pedido Ahora</button>
         </div>
     </div>
 
-    <!-- NOTIFICACIÓN TOAST EN TIEMPO REAL -->
     <div class="toast" id="userToast"></div>
 
     <script>
-        let carrito = [];
+        let carrito = JSON.parse(localStorage.getItem('tapatios_carrito_temporal') || '[]');
         let tipoEntrega = 'domicilio';
-        let metodoPagoSucursal = 'Efectivo';
+        let categoriaActiva = 'Todas';
 
-        window.addEventListener('scroll', reveal);
-        function reveal() {
-            let reveals = document.querySelectorAll('.reveal');
-            for(let i = 0; i < reveals.length; i++) {
-                let windowHeight = window.innerHeight;
-                let elementTop = reveals[i].getBoundingClientRect().top;
-                if(elementTop < windowHeight - 100) {
-                    reveals[i].classList.add('active');
-                }
-            }
-        }
-
-        function toggleCarrito() {
-            document.getElementById('cartDrawer').classList.toggle('open');
-        }
+        function toggleCarrito() { document.getElementById('cartDrawer').classList.toggle('open'); }
 
         function setTipoEntrega(tipo) {
             tipoEntrega = tipo;
-            document.getElementById('btnDom').classList.toggle('active', tipo === 'domicilio');
-            document.getElementById('btnSuc').classList.toggle('active', tipo === 'sucursal');
+            document.getElementById('btnDom').style.background = tipo === 'domicilio' ? 'var(--granate)' : 'rgba(255,255,255,0.1)';
+            document.getElementById('btnSuc').style.background = tipo === 'sucursal' ? 'var(--granate)' : 'rgba(255,255,255,0.1)';
             document.getElementById('formDomicilio').style.display = tipo === 'domicilio' ? 'block' : 'none';
             document.getElementById('formSucursal').style.display = tipo === 'sucursal' ? 'block' : 'none';
         }
 
-        function seleccionarPago(metodo) {
-            metodoPagoSucursal = metodo;
-            document.getElementById('pagoEf').classList.toggle('activo', metodo === 'Efectivo');
-            document.getElementById('pagoTar').classList.toggle('activo', metodo === 'Tarjeta');
-            document.getElementById('pagoTrans').classList.toggle('activo', metodo === 'Transferencia');
-            document.getElementById('cambioInput').style.display = (metodo === 'Efectivo') ? 'block' : 'none';
+        function toggleCambio(val) {
+            document.getElementById('cambioGroup').style.display = val === 'Efectivo' ? 'block' : 'none';
         }
 
         function cargarMenu() {
             const container = document.getElementById('menuContainer');
+            const nav = document.getElementById('catFilters');
             const prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
             
-            const categorias = { "Alimentos": [], "Paquetes": [], "Especialidades": [] };
-            prods.forEach(p => {
-                if(categorias[p.categoria]) categorias[p.categoria].push(p);
-            });
+            const cats = ['Todas', ...new Set(prods.map(p => p.categoria))];
+            nav.innerHTML = cats.map(c => `
+                <div class="cat-pill ${c === categoriaActiva ? 'active' : ''}" onclick="filtrarCat('${c}')">${c}</div>
+            `).join('');
 
-            container.innerHTML = '';
-            let tieneProductos = false;
+            let filtrados = categoriaActiva === 'Todas' ? prods : prods.filter(p => p.categoria === categoriaActiva);
 
-            for (let cat in categorias) {
-                if(categorias[cat].length > 0) {
-                    tieneProductos = true;
-                    let sec = document.createElement('div');
-                    sec.className = 'reveal active';
-                    
-                    let html = `<h2 class="category-title">${cat}</h2><div class="grid">`;
-                    categorias[cat].forEach(item => {
-                        html += `
-                            <div class="card glass-card">
-                                <div>
-                                    <h4>${item.nombre}</h4>
-                                    <p>${item.desc || ''}</p>
-                                </div>
-                                <div>
-                                    <div class="price">$${parseFloat(item.precio).toFixed(2)}</div>
-                                    <button class="add-btn" style="width:100%;" onclick="agregarCarrito('${item.nombre}', ${item.precio})">Agregar</button>
-                                </div>
+            if(filtrados.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#888; margin-top:40px;">No hay platillos en esta categoría.</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="grid">
+                    ${filtrados.map(p => `
+                        <div class="card glass-card">
+                            <div>
+                                <h4>${p.nombre}</h4>
+                                <p>${p.desc \vert{}\vert{} 'Preparado al instante con ingredientes frescos.'}</p>                             </div>                             <div>                                 <div class="price">$${parseFloat(p.precio).toFixed(2)}</div>
+                                <button class="add-btn" onclick="agregarCarrito('${p.nombre}',${p.precio})">+ Agregar a la Orden</button>
                             </div>
-                        `;
-                    });
-                    html += `</div>`;
-                    sec.innerHTML = html;
-                    container.appendChild(sec);
-                }
-            }
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
 
-            if(!tieneProductos) {
-                container.innerHTML = '<p style="text-align:center; color:#aaa; margin-top:40px;">No hay platillos disponibles por el momento.</p>';
-            }
-
-            reveal();
+        function filtrarCat(cat) {
+            categoriaActiva = cat;
+            cargarMenu();
         }
 
         function agregarCarrito(nombre, precio) {
-            carrito.push({ nombre, precio: parseFloat(precio) });
+            let item = carrito.find(x => x.nombre === nombre);
+            if(item) {
+                item.cantidad += 1;
+            } else {
+                carrito.push({ nombre, precio: parseFloat(precio), cantidad: 1 });
+            }
+            guardarCarrito();
             actualizarCarritoUI();
-            toggleCarrito();
+        }
+
+        function cambiarCantidad(idx, delta) {
+            carrito[idx].cantidad += delta;
+            if(carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
+            guardarCarrito();
+            actualizarCarritoUI();
+        }
+
+        function guardarCarrito() {
+            localStorage.setItem('tapatios_carrito_temporal', JSON.stringify(carrito));
         }
 
         function actualizarCarritoUI() {
-            document.getElementById('cartCount').innerText = carrito.length;
+            let totalCount = carrito.reduce((acc, curr) => acc + curr.cantidad, 0);
+            document.getElementById('cartCount').innerText = totalCount;
             const itemsContainer = document.getElementById('cartItems');
             let total = 0;
+
             if(carrito.length === 0) {
-                itemsContainer.innerHTML = '<p style="text-align:center; color:#888;">El carrito está vacío</p>';
+                itemsContainer.innerHTML = '<p style="text-align:center; color:#888; margin-top:30px;">Tu orden está vacía</p>';
             } else {
-                itemsContainer.innerHTML = '';
-                carrito.forEach((item, index) => {
-                    total += item.precio;
-                    itemsContainer.innerHTML += `
+                itemsContainer.innerHTML = carrito.map((item, idx) => {
+                    let subtotal = item.precio * item.cantidad;
+                    total += subtotal;
+                    return `
                         <div class="cart-item">
-                            <span>${item.nombre}</span>
-                            <span>$${item.precio.toFixed(2)} <b style="color:red; cursor:pointer;" onclick="eliminarItem(${index})">✕</b></span>
+                            <div>
+                                <div style="font-weight:bold;">${item.nombre}</div>
+                                <div style="color:var(--carnita); font-size:0.85rem;">$${item.precio.toFixed(2)} c/u</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button class="qty-btn" onclick="cambiarCantidad(${idx}, -1)">-</button>
+                                <span>${item.cantidad}</span>
+                                <button class="qty-btn" onclick="cambiarCantidad(${idx}, 1)">+</button>
+                            </div>
                         </div>
                     `;
-                });
+                }).join('');
             }
             document.getElementById('cartTotal').innerText = total.toFixed(2);
         }
 
-        function eliminarItem(idx) {
-            carrito.splice(idx, 1);
-            actualizarCarritoUI();
-        }
-
         function confirmarPedido() {
-            if(carrito.length === 0) return alert('Agrega alimentos al carrito primero.');
+            if(carrito.length === 0) return alert('Por favor agrega platillos a tu orden.');
             let numPedido = 'TP-' + Math.floor(1000 + Math.random() * 9000);
             let detallesCliente = {};
 
@@ -416,21 +378,22 @@
                 let col = document.getElementById('domColonia').value;
                 let pago = document.getElementById('domPago').value;
 
-                if(!nombre || !tel || !calle || !col || !pago) return alert('Llena todos los campos de entrega.');
+                if(!nombre || !tel || !calle || !col || !pago) return alert('Por favor completa todos los datos de entrega.');
                 detallesCliente = { tipo: 'A Domicilio', nombre, tel, direccion: `${calle}, Col. ${col}`, pago };
             } else {
                 let nombre = document.getElementById('sucNombre').value;
                 let tel = document.getElementById('sucTel').value;
+                let pago = document.getElementById('sucPago').value;
                 let cambio = document.getElementById('sucCambio').value;
 
-                if(!nombre || !tel) return alert('Llena todos los campos para recoger.');
-                detallesCliente = { tipo: 'Paso por mi pedido', nombre, tel, pago: metodoPagoSucursal, cambio: cambio ? `Cambio para: $${cambio}` : 'N/A' };
+                if(!nombre || !tel) return alert('Ingresa tu nombre y teléfono.');
+                detallesCliente = { tipo: 'Paso por mi pedido', nombre, tel, pago, cambio: cambio ? `Cambio para: $${cambio}` : 'N/A' };
             }
 
             let nuevoPedido = {
                 id: numPedido,
                 cliente: detallesCliente,
-                items: [...carrito],
+                items: carrito.map(i => ({ nombre: `${i.cantidad}x ${i.nombre}`, precio: i.precio * i.cantidad })),
                 total: parseFloat(document.getElementById('cartTotal').innerText),
                 estatus: 'Recibido / En preparación',
                 fecha: new Date().toLocaleTimeString()
@@ -442,16 +405,14 @@
             localStorage.setItem('ultimo_pedido_id', numPedido);
 
             carrito = [];
+            guardarCarrito();
             actualizarCarritoUI();
             toggleCarrito();
-            alert(`¡Pedido #${numPedido} enviado exitosamente!`);
+            alert(`¡Pedido #${numPedido} enviado exitosamente! Puedes seguir el estatus en pantalla.`);
         }
 
-        // Sincronización en tiempo real al agregar/modificar en el panel Admin
         window.addEventListener('storage', (e) => {
-            if (e.key === 'tapatios_productos') {
-                cargarMenu();
-            }
+            if (e.key === 'tapatios_productos') cargarMenu();
         });
 
         setInterval(() => {
@@ -463,14 +424,15 @@
                     let toast = document.getElementById('userToast');
                     toast.style.display = 'block';
                     toast.innerHTML = `<b>Estado de tu pedido #${miP.id}:</b><br>${miP.estatus}`;
-                    if(miP.estatus === '¡Tu pedido está listo!') {
-                        toast.style.background = '#008000';
-                    }
+                    if(miP.estatus === '¡Tu pedido está listo!') toast.style.background = '#008000';
                 }
             }
         }, 2000);
 
-        window.onload = cargarMenu;
-    </script>       
+        window.onload = () => {
+            cargarMenu();
+            actualizarCarritoUI();
+        };
+    </script>
 </body>
 </html>
