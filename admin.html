@@ -1,92 +1,224 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Tortas Ahogadas Los Tapatíos</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #121212; color: white; padding: 20px; }
-    .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 8px; }
-    input, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 4px; border: none; }
-    input { background: #2a2a2a; color: white; }
-    button { background: #a80022; color: white; font-weight: bold; cursor: pointer; }
-    .product-list { margin-top: 20px; }
-    .item { background: #2a2a2a; padding: 10px; margin-bottom: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
-    .btn-del { background: #ff4444; width: auto; padding: 5px 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Panel Admin - Los Tapatíos Y Carnitas</title>
+    
+    <!-- Configuración para App Instalable -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#800020">
+    <meta name="display" content="standalone">
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0f0f12; color: #eee; margin: 0; padding: 20px; }
+        h1, h2 { color: #D9B59C; border-bottom: 2px solid #800020; padding-bottom: 5px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+        .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(217,181,156,0.2); }
+        
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; color-scheme: dark; font-size: 16px; }
+        option { background-color: #1a1a1a; color: #ffffff; }
+        
+        button { background: #800020; color: white; border: none; padding: 12px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        button:hover { background: #a00028; }
+        .pedido-box { background: rgba(128,0,32,0.15); border-left: 4px solid #800020; padding: 15px; margin-bottom: 15px; border-radius: 6px; }
+        .badge { background: #800020; color: #D9B59C; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
+        
+        .toast { position: fixed; top: 20px; right: 20px; background: #D9B59C; color: #4a0013; padding: 15px 25px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 3000; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease; pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>Administrador de Menú</h2>
-  <input type="text" id="nombre" placeholder="Nombre del platillo">
-  <input type="number" id="precio" placeholder="Precio ($)">
-  <button onclick="guardarProducto()">Agregar Platillo</button>
+    <!-- PANTALLA DE LOGIN CON BOTÓN DE VER CONTRASEÑA -->
+    <div id="loginScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f12; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
+        <h2 style="color: #D9B59C; margin-bottom: 20px;">Acceso Admin</h2>
+        
+        <input type="password" id="adminPass" placeholder="Ingresa la contraseña" style="width: 250px; text-align: center; margin-bottom: 5px;">
+        
+        <div style="display: flex; align-items: center; margin-bottom: 15px; color: #D9B59C; font-size: 14px;">
+            <input type="checkbox" id="mostrarPass" onclick="togglePassword()" style="width: auto; margin: 0 8px 0 0; cursor: pointer;">
+            <label for="mostrarPass" style="cursor: pointer;">Mostrar contraseña</label>
+        </div>
 
-  <h3>Platillos en tiempo real</h3>
-  <div id="lista" class="product-list">Cargando...</div>
-</div>
+        <button onclick="verificarPassword()" style="width: 250px;">Entrar</button>
+    </div>
 
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    <!-- PANEL PRINCIPAL -->
+    <div id="panelPrincipal" style="display: none;">
 
-  // Reemplaza los siguientes datos con los de tu consola de Firebase
-  const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://TU_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "TU_PROJECT_ID",
-    storageBucket: "TU_PROJECT_ID.appspot.com",
-    messagingSenderId: "TU_SENDER_ID",
-    appId: "TU_APP_ID"
-  };
+        <h1>Panel de Administración - Tortas Ahogadas Los Tapatíos Y Carnitas</h1>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const productosRef = ref(db, 'productos');
+        <div class="grid">
+            <div class="card">
+                <h2>Gestión del Menú</h2>
+                <input type="text" id="prodNombre" placeholder="Nombre del alimento / paquete">
+                <input type="number" id="prodPrecio" placeholder="Precio ($)">
+                <select id="prodCat">
+                    <option value="Alimentos">Alimentos</option>
+                    <option value="Paquetes">Paquetes</option>
+                    <option value="Especialidades">Especialidades</option>
+                </select>
+                <textarea id="prodDesc" placeholder="Descripción opcional"></textarea>
+                <button onclick="guardarProducto()" style="width: 100%;">Agregar al Menú</button>
 
-  // Guardar platillo en la nube
-  window.guardarProducto = function() {
-    const nombre = document.getElementById('nombre').value;
-    const precio = document.getElementById('precio').value;
+                <h3 style="margin-top: 30px;">Menú Actual</h3>
+                <div id="listaProductosAdmin"></div>
+            </div>
 
-    if (!nombre || !precio) return alert("Llena todos los campos");
+            <div class="card">
+                <h2>Pedidos Recibidos (En Tiempo Real)</h2>
+                <div id="listaPedidosAdmin"></div>
+            </div>
+        </div>
 
-    const nuevoRef = push(productosRef);
-    set(nuevoRef, { nombre: nombre, precio: precio })
-      .then(() => {
-        document.getElementById('nombre').value = '';
-        document.getElementById('precio').value = '';
-      });
-  };
+    </div> 
 
-  // Escuchar cambios en vivo
-  onValue(productosRef, (snapshot) => {
-    const lista = document.getElementById('lista');
-    lista.innerHTML = '';
-    const data = snapshot.val();
+    <!-- CONTENEDOR DEL AVISO -->
+    <div id="adminToast" class="toast">Aviso</div>
 
-    if (data) {
-      Object.keys(data).forEach(id => {
-        const item = data[id];
-        lista.innerHTML += `
-          <div class="item">
-            <span>${item.nombre} - $${item.precio}</span>
-            <button class="btn-del" onclick="eliminarProducto('${id}')">Eliminar</button>
-          </div>
-        `;
-      });
-    } else {
-      lista.innerHTML = '<p>No hay platillos registrados.</p>';
-    }
-  });
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW falló:', err));
+        }
 
-  // Eliminar producto de la nube
-  window.eliminarProducto = function(id) {
-    remove(ref(db, 'productos/' + id));
-  };
-</script>
+        // Función para mostrar/ocultar contraseña
+        function togglePassword() {
+            let passInput = document.getElementById('adminPass');
+            if (passInput.type === "password") {
+                passInput.type = "text";
+            } else {
+                passInput.type = "password";
+            }
+        }
+
+        function mostrarAviso(mensaje) {
+            let toast = document.getElementById('adminToast');
+            toast.innerText = mensaje;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function verificarPassword() {
+            let pass = document.getElementById('adminPass').value;
+            if(pass === 'TAPATIO2026') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('panelPrincipal').style.display = 'block';
+            } else {
+                mostrarAviso('Contraseña incorrecta');
+            }
+        }
+
+        function guardarProducto() {
+            let nombre = document.getElementById('prodNombre').value;
+            let precio = document.getElementById('prodPrecio').value;
+            let categoria = document.getElementById('prodCat').value;
+            let desc = document.getElementById('prodDesc').value;
+
+            if(!nombre || !precio) return mostrarAviso('Completa nombre y precio');
+
+            let prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            prods.push({ id: Date.now(), nombre, precio: parseFloat(precio), categoria, desc });
+            localStorage.setItem('tapatios_productos', JSON.stringify(prods));
+
+            document.getElementById('prodNombre').value = '';
+            document.getElementById('prodPrecio').value = '';
+            document.getElementById('prodDesc').value = '';
+            
+            cargarProductosAdmin();
+            mostrarAviso('Producto agregado correctamente.');
+        }
+
+        function cargarProductosAdmin() {
+            let prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            let cont = document.getElementById('listaProductosAdmin');
+            cont.innerHTML = '';
+            prods.forEach((p, idx) => {
+                cont.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; background:rgba(255,255,255,0.03); padding:10px; border-radius:6px;">
+                        <span><b>${p.nombre}</b> (${p.categoria}) - $${p.precio}</span>
+                        <button style="background:red; padding:5px 10px;" onclick="eliminarProducto(${idx})">✕</button>
+                    </div>
+                `;
+            });
+        }
+
+        function eliminarProducto(idx) {
+            let prods = JSON.parse(localStorage.getItem('tapatios_productos') || '[]');
+            prods.splice(idx, 1);
+            localStorage.setItem('tapatios_productos', JSON.stringify(prods));
+            cargarProductosAdmin();
+            mostrarAviso('Producto eliminado');
+        }
+
+        let cantidadPedidosPrevios = 0;
+
+        function cargarPedidosAdmin() {
+            let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
+            let cont = document.getElementById('listaPedidosAdmin');
+
+            if(pedidos.length > cantidadPedidosPrevios) {
+                cantidadPedidosPrevios = pedidos.length;
+            }
+
+            cont.innerHTML = '';
+            if(pedidos.length === 0) {
+                cont.innerHTML = '<p>No hay pedidos pendientes.</p>';
+                return;
+            }
+
+            pedidos.reverse().forEach(p => {
+                let itemsTxt = p.items.map(i => i.nombre).join(', ');
+                cont.innerHTML += `
+                    <div class="pedido-box">
+                        <div style="display:flex; justify-content:space-between;">
+                            <b>Pedido #${p.id}</b>
+                            <span class="badge">${p.cliente.tipo}</span>
+                        </div>
+                        <p style="margin:5px 0;"><b>Cliente:</b> ${p.cliente.nombre} (${p.cliente.tel})</p>
+                        ${p.cliente.direccion ? `<p style="margin:5px 0;"><b>Dirección:</b> ${p.cliente.direccion}</p>` : ''}
+                        <p style="margin:5px 0;"><b>Pago:</b> ${p.cliente.pago} ${p.cliente.cambio || ''}</p>
+                        <p style="margin:5px 0;"><b>Productos:</b> ${itemsTxt}</p>
+                        <p style="margin:10px 0; color:#D9B59C; font-size:1.2rem;"><b>Total: $${p.total.toFixed(2)}</b></p>
+                        
+                        <select onchange="actualizarEstatus('${p.id}', this.value)" style="margin-top:10px;">
+                            <option value="Recibido / En preparación" ${p.estatus === 'Recibido / En preparación' ? 'selected' : ''}>Recibido / En preparación</option>
+                            <option value="En camino / Listo para entregar" ${p.estatus === 'En camino / Listo para entregar' ? 'selected' : ''}>En camino / En sucursal</option>
+                            <option value="¡Tu pedido está listo!" ${p.estatus === '¡Tu pedido está listo!' ? 'selected' : ''}>¡Tu pedido está listo!</option>
+                        </select>
+                    </div>
+                `;
+            });
+        }
+
+        function actualizarEstatus(id, nuevoEstatus) {
+            let pedidos = JSON.parse(localStorage.getItem('tapatios_pedidos') || '[]');
+            let p = pedidos.find(x => x.id === id);
+            if(p) {
+                p.estatus = nuevoEstatus;
+                localStorage.setItem('tapatios_pedidos', JSON.stringify(pedidos));
+                mostrarAviso('Estatus actualizado');
+            }
+        }
+
+        // Sincronización en tiempo real exacta a la de ARMM
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'tapatios_productos') {
+                cargarProductosAdmin();
+            }
+            if (e.key === 'tapatios_pedidos') {
+                cargarPedidosAdmin();
+            }
+        });
+
+        setInterval(cargarPedidosAdmin, 2000);
+        window.onload = () => {
+            cargarProductosAdmin();
+            cargarPedidosAdmin();
+        };
+    </script>
 </body>
 </html>
