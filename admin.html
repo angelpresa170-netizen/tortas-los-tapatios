@@ -14,17 +14,8 @@
       --glass-border: rgba(217, 181, 156, 0.2);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: #fff;
-      padding: 20px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-dark); color: #fff; padding: 20px; }
 
     .glass-panel {
       background: var(--glass-bg);
@@ -35,75 +26,40 @@
       margin-bottom: 25px;
     }
 
-    h1, h2 {
-      color: var(--carnita-accent);
-      margin-bottom: 15px;
-    }
+    h1, h2, h3 { color: var(--carnita-accent); margin-bottom: 15px; }
 
-    /* SWITCH ESTILO IOS FLUIDO */
-    .switch-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-
+    .switch-container { display: flex; align-items: center; justify-content: space-between; }
+    .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
     .switch input { opacity: 0; width: 0; height: 0; }
-
     .slider {
-      position: absolute; cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #333;
-      transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      border-radius: 34px;
-      border: 1px solid var(--glass-border);
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #333; transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 34px; border: 1px solid var(--glass-border);
     }
-
     .slider:before {
-      position: absolute; content: "";
-      height: 26px; width: 26px;
-      left: 3px; bottom: 3px;
-      background-color: white;
-      transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      border-radius: 50%;
+      position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px;
+      background-color: white; transition: .4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 50%;
     }
-
-    input:checked + .slider {
-      background-color: var(--garnet-light);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
+    input:checked + .slider { background-color: var(--garnet-light); }
+    input:checked + .slider:before { transform: translateX(26px); }
 
     .btn-action {
-      background: var(--garnet-main);
-      color: #fff;
-      border: 1px solid var(--carnita-accent);
-      padding: 10px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
+      background: var(--garnet-main); color: #fff; border: 1px solid var(--carnita-accent);
+      padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: bold;
+    }
+    .btn-danger { background: #a00000; border-color: #ff5555; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; margin-bottom: 4px; color: var(--carnita-accent); font-size: 0.85rem; }
+    input, textarea {
+      width: 100%; padding: 10px; border-radius: 8px;
+      border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
     }
 
-    .form-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
+    .item-list { list-style: none; margin-top: 15px; }
+    .item-list li {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px; border-bottom: 1px solid var(--glass-border);
     }
   </style>
 </head>
@@ -111,69 +67,145 @@
 
   <h1>Panel de Administración</h1>
 
-  <!-- SWITCH EVENTOS -->
+  <!-- SWITCH DISPONIBILIDAD EVENTOS -->
   <div class="glass-panel switch-container">
     <div>
-      <h2>Módulo de Contratación de Eventos</h2>
-      <p style="color:#ccc; font-size: 0.9rem;">Activa o desactiva la disponibilidad de banquetes en tiempo real para todos los clientes.</p>
+      <h2>Activar Módulo de Eventos</h2>
+      <p style="color:#ccc; font-size: 0.9rem;">Muestra u oculta la sección de banquetes en la Web Pública al instante.</p>
     </div>
     <label class="switch">
-      <input type="checkbox" id="events-toggle" checked onchange="toggleEvents(this.checked)">
+      <input type="checkbox" id="events-toggle" onchange="toggleEvents(this.checked)">
       <span class="slider"></span>
     </label>
   </div>
 
-  <!-- GESTOR DE MENÚ -->
+  <!-- GESTIÓN DE MENÚ Y ALIMENTOS -->
   <div class="glass-panel">
-    <h2>Agregar Platillo / Promoción</h2>
-    <div class="form-row">
-      <input type="text" id="item-name" placeholder="Nombre platillo" style="flex:2;">
-      <input type="number" id="item-price" placeholder="Precio ($)" style="flex:1;">
-      <button class="btn-action" onclick="addMenuItem()">Agregar</button>
+    <h2>Gestión del Menú (Comida Rápida)</h2>
+    <div class="form-group">
+      <label>Nombre del Alimento</label>
+      <input type="text" id="menu-name" placeholder="Ej: Torta Ahogada">
     </div>
+    <div class="form-group">
+      <label>Precio ($)</label>
+      <input type="number" id="menu-price" placeholder="Ej: 85">
+    </div>
+    <div class="form-group">
+      <label>Descripción / Ingredientes</label>
+      <textarea id="menu-desc" rows="2" placeholder="Pan birote, carnitas..."></textarea>
+    </div>
+    <button class="btn-action" onclick="addMenuItem()">+ Agregar Alimento</button>
+
+    <h3 style="margin-top:20px;">Platillos Actuales</h3>
+    <ul class="item-list" id="menu-items-list"></ul>
   </div>
 
-  <script>
-    const channel = new BroadcastChannel('tapatos_sync');
+  <!-- GESTIÓN DE PAQUETES DE EVENTOS -->
+  <div class="glass-panel">
+    <h2>Gestión de Paquetes para Eventos</h2>
+    <div class="form-group">
+      <label>Nombre del Paquete</label>
+      <input type="text" id="pkg-name" placeholder="Ej: Paquete 100 Personas">
+    </div>
+    <div class="form-group">
+      <label>Precio Total ($)</label>
+      <input type="number" id="pkg-price" placeholder="Ej: 8500">
+    </div>
+    <div class="form-group">
+      <label>Inclusiones (Separadas por comas)</label>
+      <input type="text" id="pkg-features" placeholder="Carnitas 25kg, Salsas, Servicio 4hrs">
+    </div>
+    <button class="btn-action" onclick="addPackage()">+ Agregar Paquete de Evento</button>
 
-    let state = {
-      eventsActive: true,
-      menu: [
-        { id: 1, name: "Torta Ahogada Clasica", price: 85, desc: "Pan birote salado con carnitas jugosas." },
-        { id: 2, name: "Tacos Dorados (Orden 3)", price: 60, desc: "Rellenos de papa o requesón con carnitas encima." }
-      ],
-      packages: [
-        { id: 'p1', name: "Paquete 50 Personas", capacity: 50, price: 4500, features: [{text:"Carnitas mixtas 12kg", inc: true}, {text:"Salsas y verduras", inc: true}, {text:"Bebidas incluidas", inc: false}] },
-        { id: 'p2', name: "Paquete 100 Personas", capacity: 100, price: 8500, features: [{text:"Carnitas mixtas 25kg", inc: true}, {text:"Salsas y verduras", inc: true}, {text:"Personal de servicio", inc: true}] }
-      ]
+    <h3 style="margin-top:20px;">Paquetes Configurados</h3>
+    <ul class="item-list" id="package-items-list"></ul>
+  </div>
+
+  <!-- FIREBASE CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_PROYECTO.firebaseapp.com",
+      databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
+      projectId: "TU_PROYECTO",
+      storageBucket: "TU_PROYECTO.appspot.com",
+      messagingSenderId: "TU_SENDER_ID",
+      appId: "TU_APP_ID"
     };
 
-    function sync() {
-      // Emitir el cambio a la página web pública
-      channel.postMessage({ type: 'UPDATE_STATE', payload: state });
-    }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Cargar datos actuales
+    db.ref().on('value', (snapshot) => {
+      const data = snapshot.val() || {};
+      document.getElementById('events-toggle').checked = data.eventsActive || false;
+
+      renderMenuList(data.menu || {});
+      renderPackageList(data.packages || {});
+    });
 
     function toggleEvents(active) {
-      state.eventsActive = active;
-      sync();
+      db.ref('eventsActive').set(active);
     }
 
+    // AGREGAR Y ELIMINAR PLATILLOS
     function addMenuItem() {
-      const name = document.getElementById('item-name').value;
-      const price = parseFloat(document.getElementById('item-price').value);
+      const name = document.getElementById('menu-name').value;
+      const price = document.getElementById('menu-price').value;
+      const desc = document.getElementById('menu-desc').value;
 
       if(name && price) {
-        state.menu.push({
-          id: Date.now(),
-          name: name,
-          price: price,
-          desc: "Nuevo producto agregado"
-        });
-        sync();
-        document.getElementById('item-name').value = '';
-        document.getElementById('item-price').value = '';
-        alert("¡Platillo agregado y sincronizado!");
+        db.ref('menu').push({ name, price: parseFloat(price), desc });
+        document.getElementById('menu-name').value = '';
+        document.getElementById('menu-price').value = '';
+        document.getElementById('menu-desc').value = '';
       }
+    }
+
+    function deleteMenuItem(id) {
+      db.ref('menu/' + id).remove();
+    }
+
+    function renderMenuList(menuObj) {
+      const list = document.getElementById('menu-items-list');
+      list.innerHTML = Object.entries(menuObj).map(([id, item]) => `
+        <li>
+          <span><strong>${item.name}</strong> - $${item.price}</span>
+          <button class="btn-action btn-danger" onclick="deleteMenuItem('${id}')">Eliminar</button>
+        </li>
+      `).join('');
+    }
+
+    // AGREGAR Y ELIMINAR PAQUETES DE EVENTOS
+    function addPackage() {
+      const name = document.getElementById('pkg-name').value;
+      const price = document.getElementById('pkg-price').value;
+      const features = document.getElementById('pkg-features').value;
+
+      if(name && price) {
+        db.ref('packages').push({ name, price: parseFloat(price), features });
+        document.getElementById('pkg-name').value = '';
+        document.getElementById('pkg-price').value = '';
+        document.getElementById('pkg-features').value = '';
+      }
+    }
+
+    function deletePackage(id) {
+      db.ref('packages/' + id).remove();
+    }
+
+    function renderPackageList(pkgObj) {
+      const list = document.getElementById('package-items-list');
+      list.innerHTML = Object.entries(pkgObj).map(([id, pkg]) => `
+        <li>
+          <span><strong>${pkg.name}</strong> - $${pkg.price}</span>
+          <button class="btn-action btn-danger" onclick="deletePackage('${id}')">Eliminar</button>
+        </li>
+      `).join('');
     }
   </script>
 </body>
