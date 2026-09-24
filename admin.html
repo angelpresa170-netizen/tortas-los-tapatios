@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Los Tapatíos & Carnitas</title>
 
-  <!-- Socket.io CDN de tu servidor Render -->
-  <script src="https://armm-app.onrender.com/socket.io/socket.io.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <style>
     :root {
@@ -22,66 +23,34 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--bg-dark); color: #fff; padding: 20px; max-width: 900px; margin: 0 auto; }
 
-    .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 25px;
-    }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 25px; }
+    h1, h2 { color: var(--carnita-accent); margin-bottom: 15px; }
 
-    h1, h2, h3 { color: var(--carnita-accent); margin-bottom: 15px; }
-
-    /* SWITCH TÁCTIL */
     .switch-row { display: flex; align-items: center; justify-content: space-between; }
     .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
     .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid var(--glass-border);
-    }
-    .slider:before {
-      position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px;
-      background-color: white; transition: .4s; border-radius: 50%;
-    }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid var(--glass-border); }
+    .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
     input:checked + .slider { background-color: var(--garnet-light); }
     input:checked + .slider:before { transform: translateX(26px); }
 
-    .btn-action {
-      background: linear-gradient(135deg, var(--garnet-light), var(--garnet-main));
-      color: #fff; border: 1px solid var(--carnita-accent);
-      padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer;
-      transition: transform 0.2s var(--spring-easing);
-    }
+    .btn-action { background: linear-gradient(135deg, var(--garnet-light), var(--garnet-main)); color: #fff; border: 1px solid var(--carnita-accent); padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: transform 0.2s var(--spring-easing); }
     .btn-action:active { transform: scale(0.94); }
 
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; margin-bottom: 4px; color: var(--carnita-accent); font-size: 0.85rem; }
-    input {
-      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
-    }
+    input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none; }
 
-    /* MATRIZ CHECKBOXES ESTILO EXAMEN */
-    .checkbox-matrix {
-      display: flex; flex-direction: column; gap: 8px; margin: 15px 0;
-      background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px;
-    }
+    .checkbox-matrix { display: flex; flex-direction: column; gap: 8px; margin: 15px 0; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px; }
     .matrix-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; }
 
-    /* TOAST BANNER */
     #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; }
-    .toast-banner {
-      background: rgba(21, 21, 26, 0.95); border: 1px solid var(--carnita-accent);
-      color: #fff; padding: 12px 24px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(15px);
-    }
+    .toast-banner { background: rgba(21, 21, 26, 0.95); border: 1px solid var(--carnita-accent); color: #fff; padding: 12px 24px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(15px); }
   </style>
 </head>
 <body>
 
   <div id="toast-container"></div>
-
   <h1>Panel de Administración</h1>
 
   <!-- SWITCH GENERAL DE EVENTOS -->
@@ -111,7 +80,7 @@
     <h2>2. Publicar Paquete de Evento</h2>
     <div class="form-group"><label>Nombre del Paquete</label><input type="text" id="pkg-name" placeholder="Ej: Paquete 100 Personas"></div>
     <div class="form-group"><label>Precio ($)</label><input type="number" id="pkg-price" placeholder="Ej: 8500"></div>
-    
+
     <label style="color:var(--carnita-accent); font-size:0.85rem;">Selecciona las Inclusiones (✔️ Incluido / ❌ No incluido)</label>
     <div class="checkbox-matrix" id="package-inclusions-matrix"></div>
 
@@ -127,7 +96,11 @@
   </div>
 
   <script>
-    const socket = io("https://armm-app.onrender.com");
+    const firebaseConfig = {
+      databaseURL: "https://armm-app-default-rtdb.firebaseio.com"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     let state = {
       eventsActive: true,
@@ -145,18 +118,21 @@
       setTimeout(() => toast.remove(), 2500);
     }
 
-    socket.on('update_data', (data) => {
-      state = data;
-      if(!state.globalInclusions) state.globalInclusions = ["12kg Carnitas Tradicionales", "Salsas y Verduras"];
-      document.getElementById('events-toggle').checked = state.eventsActive;
-      renderAdminUI();
+    db.ref('storeData').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if(data) {
+        state = data;
+        if(!state.globalInclusions) state.globalInclusions = ["12kg Carnitas Tradicionales", "Salsas y Verduras"];
+        if(!state.menu) state.menu = [];
+        if(!state.packages) state.packages = [];
+        document.getElementById('events-toggle').checked = state.eventsActive;
+        renderAdminUI();
+      }
     });
 
     function renderAdminUI() {
-      // Render Banco Global
       document.getElementById('global-inclusions-list').innerHTML = "Inclusiones registradas: " + state.globalInclusions.join(', ');
 
-      // Render Matriz de Selección
       const matrix = document.getElementById('package-inclusions-matrix');
       matrix.innerHTML = state.globalInclusions.map((text, idx) => `
         <div class="matrix-item">
@@ -178,7 +154,7 @@
         state.globalInclusions.push(txt);
         document.getElementById('new-inclusion-text').value = '';
         sync();
-        showToast("Reactivo agregado al banco");
+        showToast("Reactivo agregado");
       }
     }
 
@@ -208,8 +184,9 @@
     }
 
     function sync() {
-      socket.emit('admin_update_data', state);
+      db.ref('storeData').set(state);
     }
   </script>
 </body>
 </html>
+
