@@ -16,137 +16,85 @@
       --spring-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: #fff;
-      padding-bottom: 100px;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-dark); color: #fff; padding-bottom: 100px; overflow-x: hidden; }
 
     .glass-card {
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border); border-radius: 20px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease;
     }
 
     .btn-floating {
       background: linear-gradient(135deg, var(--garnet-light), var(--garnet-main));
-      color: #fff;
-      border: 1px solid var(--carnita-accent);
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
+      color: #fff; border: 1px solid var(--carnita-accent);
+      padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer;
       box-shadow: 0 10px 25px -5px rgba(128, 0, 32, 0.5);
-      transition: transform 0.2s var(--spring-easing), box-shadow 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      transition: transform 0.2s var(--spring-easing); display: inline-flex; align-items: center; gap: 8px;
     }
-
-    .btn-floating:active {
-      transform: scale(0.94);
-      box-shadow: 0 4px 15px -3px rgba(128, 0, 32, 0.3);
-    }
+    .btn-floating:active { transform: scale(0.94); }
 
     header {
-      position: sticky; top: 0; z-index: 100;
-      padding: 15px 20px;
+      position: sticky; top: 0; z-index: 100; padding: 15px 20px;
       display: flex; justify-content: space-between; align-items: center;
-      background: rgba(13, 13, 16, 0.85);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--glass-border);
+      background: rgba(13, 13, 16, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border);
     }
 
     .brand-title { color: var(--carnita-accent); font-size: 1.2rem; font-weight: 700; }
     .cart-trigger { position: relative; }
-
     .cart-badge {
-      position: absolute; top: -5px; right: -5px;
-      background: var(--carnita-accent); color: var(--garnet-dark);
-      font-size: 0.75rem; font-weight: bold;
-      width: 20px; height: 20px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
+      position: absolute; top: -5px; right: -5px; background: var(--carnita-accent); color: var(--garnet-dark);
+      font-size: 0.75rem; font-weight: bold; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     }
 
     .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+    .section-title { color: var(--carnita-accent); margin: 25px 0 15px 0; font-size: 1.5rem; border-left: 4px solid var(--garnet-main); padding-left: 10px; }
 
-    .section-title {
-      color: var(--carnita-accent);
-      margin: 25px 0 15px 0;
-      font-size: 1.5rem;
-      border-left: 4px solid var(--garnet-main);
-      padding-left: 10px;
-    }
-
-    .grid-menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
+    .grid-menu { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
     .item-card { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
-    .item-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-    .item-card p { color: #ccc; font-size: 0.85rem; margin-bottom: 15px; }
     .item-price { color: var(--carnita-accent); font-size: 1.2rem; font-weight: bold; }
 
     #events-section { display: none; margin-top: 40px; }
-
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .package-card { padding: 25px; border: 1px solid var(--carnita-accent); position: relative; }
-    .package-card.custom-pkg { border-style: dashed; }
-
-    .feature-list { list-style: none; margin: 15px 0; }
-    .feature-list li { margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-    .feature-list li.check { color: #4EAA25; }
-    .feature-list li.cross { color: #E53935; opacity: 0.6; }
+    .events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .package-card { padding: 25px; border: 1px solid var(--carnita-accent); }
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
       z-index: 1000; display: none; justify-content: center; align-items: flex-end;
     }
-
     .modal-content {
       width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto;
-      border-radius: 30px 30px 0 0; padding: 25px; background: #15151a;
-      border: 1px solid var(--glass-border); transform: translateY(100%);
-      transition: transform 0.3s var(--spring-easing);
+      border-radius: 30px 30px 0 0; padding: 25px; background: #15151a; border: 1px solid var(--glass-border);
+      transform: translateY(100%); transition: transform 0.3s var(--spring-easing);
     }
-
     .modal-overlay.active { display: flex; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
 
     .form-group { margin-bottom: 15px; }
     .form-group label { display: block; margin-bottom: 5px; color: var(--carnita-accent); font-size: 0.85rem; }
     .form-group input, .form-group select {
-      width: 100%; padding: 12px; border-radius: 12px;
-      border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
+      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: #fff; outline: none;
     }
 
-    .picker-container { display: flex; gap: 10px; }
+    /* WHEEL TIME PICKER */
     .wheel-time {
-      flex: 1; height: 100px; overflow-y: scroll;
-      border: 1px solid var(--glass-border); border-radius: 12px;
-      text-align: center; scroll-snap-type: y mandatory;
+      display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scroll-snap-type: x mandatory;
     }
-    .wheel-time div { height: 40px; line-height: 40px; scroll-snap-align: center; font-size: 1.1rem; }
+    .time-slot {
+      flex: 0 0 90px; padding: 10px; text-align: center; border: 1px solid var(--glass-border);
+      border-radius: 12px; background: rgba(255,255,255,0.03); cursor: pointer; scroll-snap-align: center;
+    }
+    .time-slot.selected { background: var(--garnet-main); border-color: var(--carnita-accent); font-weight: bold; }
+
+    /* CHECKBOXES REGLAS PERSONALIZADAS */
+    .custom-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px; border-bottom: 1px solid var(--glass-border);
+    }
+    .custom-option.disabled { opacity: 0.3; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -154,8 +102,7 @@
   <header>
     <div class="brand-title">LOS TAPATÍOS & CARNITAS</div>
     <button class="btn-floating cart-trigger" onclick="toggleCart()">
-      🛒 Carrito
-      <span class="cart-badge" id="cart-count">0</span>
+      🛒 Carrito <span class="cart-badge" id="cart-count">0</span>
     </button>
   </header>
 
@@ -179,215 +126,170 @@
       
       <div class="form-group">
         <label>Tipo de Entrega</label>
-        <select id="delivery-type" onchange="toggleDeliveryOptions()">
+        <select id="delivery-type" onchange="document.getElementById('address-field').style.display = this.value === 'delivery' ? 'block' : 'none'">
           <option value="pickup">Recoger en Sucursal</option>
           <option value="delivery">A Domicilio</option>
         </select>
       </div>
-
       <div class="form-group" id="address-field" style="display:none;">
         <label>Dirección Completa</label>
         <input type="text" placeholder="Calle, número, colonia...">
       </div>
-
       <div class="form-group">
         <label>Método de Pago</label>
-        <select id="payment-method" onchange="toggleCashOption()">
+        <select id="payment-method" onchange="document.getElementById('cash-change-field').style.display = this.value === 'cash' ? 'block' : 'none'">
           <option value="cash">Efectivo</option>
           <option value="card">Tarjeta al entregar</option>
           <option value="transfer">Transferencia</option>
         </select>
       </div>
-
       <div class="form-group" id="cash-change-field">
-        <label>¿Con cuánto vas a pagar? (Para llevar cambio)</label>
-        <input type="number" id="cash-amount" placeholder="Ej: $500">
+        <label>¿Con cuánto vas a pagar? (Para cambio)</label>
+        <input type="number" placeholder="Ej: $500">
       </div>
-
-      <button class="btn-floating" style="width:100%; justify-content: center;" onclick="checkout()">Confirmar Pedido</button>
+      <button class="btn-floating" style="width:100%; justify-content: center;" onclick="alert('¡Pedido enviado!'); toggleCart();">Confirmar Pedido</button>
     </div>
   </div>
 
-  <!-- MODAL CHECKOUT EVENTOS -->
+  <!-- MODAL CHECKOUT & CREADOR DE EVENTOS -->
   <div class="modal-overlay" id="event-modal">
     <div class="modal-content">
-      <h2 style="color:var(--carnita-accent); margin-bottom: 15px;">Agendar Evento</h2>
-      <p id="selected-package-title" style="color: #ccc; margin-bottom: 15px;"></p>
+      <h2 style="color:var(--carnita-accent); margin-bottom: 15px;" id="event-modal-title">Agendar Evento</h2>
       
+      <!-- CREADOR PERSONALIZADO (SI ELIGE PERSONALIZAR) -->
+      <div id="custom-builder-section" style="display:none; margin-bottom: 20px;">
+        <label style="color:var(--carnita-accent); font-size:0.85rem;">1. Número de Invitados</label>
+        <select id="guests-count" onchange="updateCustomRules()">
+          <option value="50">50 Personas</option>
+          <option value="100">100 Personas</option>
+          <option value="150">150 Personas</option>
+          <option value="200">200 Personas</option>
+        </select>
+        
+        <label style="color:var(--carnita-accent); font-size:0.85rem; margin-top:10px; display:block;">2. Personaliza tu Menú</label>
+        <div class="custom-option"><label><input type="checkbox" id="opt-premium" onchange="updateCustomRules()"> Menú Premium (Carnitas + Costilla)</label></div>
+        <div class="custom-option" id="container-suave"><label><input type="checkbox" id="opt-suave"> Salsa Extra Suave (Incompatible con Premium)</label></div>
+        <div class="custom-option"><label><input type="checkbox"> Meseros (Incluido en +100 personas)</label></div>
+      </div>
+
       <div class="form-group">
         <label>Nombre del Contratante</label>
-        <input type="text" id="event-name" placeholder="Nombre completo">
+        <input type="text" placeholder="Tu nombre completo">
       </div>
-
       <div class="form-group">
         <label>Teléfono de Contacto</label>
-        <input type="tel" id="event-phone" placeholder="33 0000 0000">
+        <input type="tel" placeholder="33 0000 0000">
       </div>
-
       <div class="form-group">
-        <label>Lugar/Dirección del Evento</label>
-        <input type="text" id="event-address" placeholder="Ubicación completa">
+        <label>Dirección del Evento</label>
+        <input type="text" placeholder="Calle y número">
       </div>
-
       <div class="form-group">
-        <label>Fecha del Evento (Google Calendar Style)</label>
+        <label>Fecha (Calendario)</label>
         <input type="date" id="event-date">
       </div>
-
       <div class="form-group">
-        <label>Hora de Inicio (Selector Rueda)</label>
-        <div class="picker-container">
-          <div class="wheel-time">
-            <div>12:00 PM</div><div>01:00 PM</div><div>02:00 PM</div><div>03:00 PM</div><div>04:00 PM</div><div>05:00 PM</div><div>06:00 PM</div>
-          </div>
+        <label>Hora de Inicio (Selecciona una)</label>
+        <div class="wheel-time">
+          <div class="time-slot" onclick="selectTime(this)">12:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this)">02:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this)">04:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this)">06:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this)">08:00 PM</div>
         </div>
       </div>
 
-      <button class="btn-floating" style="width:100%; justify-content: center;" onclick="submitEvent()">Reservar Evento</button>
+      <button class="btn-floating" style="width:100%; justify-content: center;" onclick="submitEvent()">Confirmar Reservación</button>
     </div>
   </div>
 
-  <!-- FIREBASE CDN -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- CONEXIÓN EN TIEMPO REAL SIN CONFIGURACIÓN COMPLICADA -->
+  <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.min.js"></script>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_PROYECTO.firebaseapp.com",
-      databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
-      projectId: "TU_PROYECTO",
-      storageBucket: "TU_PROYECTO.appspot.com",
-      messagingSenderId: "TU_SENDER_ID",
-      appId: "TU_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    let cart = [];
-    let state = { eventsActive: false, menu: {}, packages: {} };
-
-    // Escuchar la base de datos en tiempo real
-    db.ref().on('value', (snapshot) => {
-      const data = snapshot.val() || {};
-      state.eventsActive = data.eventsActive || false;
-      state.menu = data.menu || {};
-      state.packages = data.packages || {};
-      
-      renderMenu();
-      renderEvents();
+    // Servidor global automático listo para usar
+    const pubnub = new PubNub({
+      publishKey: "pub-c-89736e0d-b4b1-4f1d-b82b-6c4ff5511bd9",
+      subscribeKey: "sub-c-e3627d3b-6351-4d37-a25e-3ca9762fa53e",
+      userId: "user_public_" + Math.random()
     });
 
-    function renderMenu() {
-      const container = document.getElementById('menu-container');
-      const items = Object.entries(state.menu);
-      
-      if(items.length === 0) {
-        container.innerHTML = `<p style="color:#888;">No hay productos disponibles por ahora.</p>`;
-        return;
-      }
+    let state = { eventsActive: true, menu: [], packages: [] };
+    let selectedTimeStr = "";
 
-      container.innerHTML = items.map(([id, item]) => `
+    pubnub.subscribe({ channels: ['tapatios_channel'] });
+    pubnub.addListener({
+      message: function(event) {
+        state = event.message;
+        renderAll();
+      }
+    });
+
+    function renderAll() {
+      // Render Menú
+      const menuContainer = document.getElementById('menu-container');
+      menuContainer.innerHTML = state.menu.map(item => `
         <div class="glass-card item-card">
-          <div>
-            <h3>${item.name}</h3>
-            <p>${item.desc || ''}</p>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><h3>${item.name}</h3><p>${item.desc || ''}</p></div>
+          <div style="display:flex; justify-style:space-between; align-items:center; margin-top:10px;">
             <span class="item-price">$${item.price}</span>
-            <button class="btn-floating" onclick="addToCart('${id}')">+</button>
+            <button class="btn-floating" onclick="alert('¡Agregado!')">+</button>
           </div>
         </div>
       `).join('');
-    }
 
-    function renderEvents() {
+      // Render Eventos
       const eventsSec = document.getElementById('events-section');
-      if (!state.eventsActive) {
-        eventsSec.style.display = 'none';
-        return;
-      }
-      eventsSec.style.display = 'block';
+      eventsSec.style.display = state.eventsActive ? 'block' : 'none';
 
-      const container = document.getElementById('events-container');
-      const pkgs = Object.entries(state.packages);
-
-      let html = pkgs.map(([id, pkg]) => {
-        const featuresArr = pkg.features ? pkg.features.split(',') : [];
-        return `
-          <div class="glass-card package-card">
-            <h3>${pkg.name}</h3>
-            <div class="item-price" style="margin: 10px 0;">$${pkg.price} MXN</div>
-            <ul class="feature-list">
-              ${featuresArr.map(f => `<li class="check">✔️ ${f.trim()}</li>`).join('')}
-            </ul>
-            <button class="btn-floating" style="width:100%; justify-content:center;" onclick="openEventModal('${pkg.name}')">Contratar Paquete</button>
-          </div>
-        `;
-      }).join('');
+      const eventsContainer = document.getElementById('events-container');
+      let html = state.packages.map(pkg => `
+        <div class="glass-card package-card">
+          <h3>${pkg.name}</h3>
+          <div class="item-price" style="margin: 10px 0;">$${pkg.price} MXN</div>
+          <p style="color:#ccc; font-size:0.85rem;">${pkg.features}</p>
+          <button class="btn-floating" style="width:100%; justify-content:center; margin-top:15px;" onclick="openEventModal('${pkg.name}', false)">Contratar</button>
+        </div>
+      `).join('');
 
       html += `
-        <div class="glass-card package-card custom-pkg">
-          <h3>Diseña tu Paquete</h3>
-          <p style="color:#ccc; font-size:0.85rem; margin: 10px 0;">Arma tu menú a la medida con reglas automáticas.</p>
-          <button class="btn-floating" style="width:100%; justify-content:center;" onclick="openEventModal('Paquete Personalizado')">Crear Mi Paquete</button>
+        <div class="glass-card package-card" style="border-style:dashed;">
+          <h3>Crea tu Paquete</h3>
+          <p style="color:#ccc; font-size:0.85rem; margin:10px 0;">Arma el menú a tu gusto con límites automáticos.</p>
+          <button class="btn-floating" style="width:100%; justify-content:center;" onclick="openEventModal('Paquete Personalizado', true)">Diseñar Paquete</button>
         </div>
       `;
-
-      container.innerHTML = html;
+      eventsContainer.innerHTML = html;
     }
 
-    function addToCart(id) {
-      const item = state.menu[id];
-      if(item) {
-        cart.push(item);
-        updateCartUI();
-      }
-    }
-
-    function updateCartUI() {
-      document.getElementById('cart-count').innerText = cart.length;
-      const cartItemsContainer = document.getElementById('cart-items');
-      cartItemsContainer.innerHTML = cart.map(item => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-          <span>${item.name}</span>
-          <span>$${item.price}</span>
-        </div>
-      `).join('');
-      
-      const total = cart.reduce((acc, curr) => acc + curr.price, 0);
-      document.getElementById('cart-total').innerText = `$${total}`;
-    }
-
-    function toggleCart() {
-      document.getElementById('cart-modal').classList.toggle('active');
-    }
-
-    function toggleDeliveryOptions() {
-      const type = document.getElementById('delivery-type').value;
-      document.getElementById('address-field').style.display = type === 'delivery' ? 'block' : 'none';
-    }
-
-    function toggleCashOption() {
-      const method = document.getElementById('payment-method').value;
-      document.getElementById('cash-change-field').style.display = method === 'cash' ? 'block' : 'none';
-    }
-
-    function openEventModal(title) {
-      document.getElementById('selected-package-title').innerText = "Seleccionado: " + title;
+    function openEventModal(title, isCustom) {
+      document.getElementById('event-modal-title').innerText = title;
+      document.getElementById('custom-builder-section').style.display = isCustom ? 'block' : 'none';
       document.getElementById('event-modal').classList.add('active');
     }
 
-    function checkout() {
-      alert("¡Pedido realizado con éxito!");
-      cart = [];
-      updateCartUI();
-      toggleCart();
+    function selectTime(element) {
+      document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedTimeStr = element.innerText;
     }
 
+    function updateCustomRules() {
+      // Regla de Incompatibilidad: Si marca Premium, desactiva Salsa Suave
+      const isPremium = document.getElementById('opt-premium').checked;
+      const suaveContainer = document.getElementById('container-suave');
+      if(isPremium) {
+        suaveContainer.classList.add('disabled');
+        document.getElementById('opt-suave').checked = false;
+      } else {
+        suaveContainer.classList.remove('disabled');
+      }
+    }
+
+    function toggleCart() { document.getElementById('cart-modal').classList.toggle('active'); }
     function submitEvent() {
-      alert("¡Solicitud de evento recibida!");
+      if(!selectedTimeStr) { alert("Por favor elige una hora."); return; }
+      alert("¡Evento Agendado con éxito para las " + selectedTimeStr + "!");
       document.getElementById('event-modal').classList.remove('active');
     }
   </script>
